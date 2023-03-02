@@ -9,4 +9,5 @@
 
     <string name="hello_first_fragment">THE BEST APP THAT WILL SAVE MANY LIVES</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="placeholder">Placeholder</string>
 </resources>
