@@ -8,22 +8,22 @@ import androidx.appcompat.app.AppCompatActivity
 
 
 class CheckUpPage : AppCompatActivity() {
+
+    private lateinit var datePicker : DatePicker
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_up_page)
 
-        //initDatePicker()
+        datePicker = findViewById(R.id.setCheckUpDatePicker)//get datePicker object
 
 
     }
 
+    fun openDatePicker(view: View) {
 
-
-    fun openDatePicker() {
-
-        val datePicker = findViewById<DatePicker>(R.id.setCheckUpDatePicker)//get datePicker object
 
         val calendar = Calendar.getInstance()
+
 
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
@@ -31,13 +31,13 @@ class CheckUpPage : AppCompatActivity() {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         }
 
-        datePicker.minDate = calendar.timeInMillis
 
-        datePicker.setOnClickListener {
-            DatePickerDialog(this@CheckUpPage, dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)).show()
-        }
+
+        DatePickerDialog(this@CheckUpPage, dateSetListener,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)).show()
+
+        datePicker.minDate = calendar.timeInMillis
     }
 }

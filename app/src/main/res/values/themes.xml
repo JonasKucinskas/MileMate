@@ -22,4 +22,6 @@
     <style name="Theme.MileMate.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MileMate.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
 </resources>
