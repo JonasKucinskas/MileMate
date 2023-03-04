@@ -9,10 +9,6 @@
         android:id="@+id/FirstFragment"
         android:name="com.example.milemate.FirstFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-        <action
-            android:id="@+id/action_FirstFragment_to_placeholder"
-            app:destination="@id/placeholder" />
-    </fragment>
+        tools:layout="@layout/fragment_first"/>
     <fragment android:id="@+id/placeholder" />
 </navigation>

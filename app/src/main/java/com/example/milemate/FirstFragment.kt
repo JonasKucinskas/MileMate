@@ -32,7 +32,7 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
+        binding.button.setOnClickListener {
             val checkUpPage = Intent(context, CheckUpPage::class.java)
             startActivity(checkUpPage)
         }
