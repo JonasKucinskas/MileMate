@@ -10,4 +10,5 @@
     <string name="no_cars">There are no linked cars to this application. :(</string>
 
     <string name="placeholder">Placeholder</string>
+    <string name="check_up_expiry_date">Check Up Expiry Date</string>
 </resources>
