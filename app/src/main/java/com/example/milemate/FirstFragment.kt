@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.milemate.databinding.FragmentFirstBinding
+import android.widget.Button
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -32,9 +33,27 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
+
+        binding.checkUpBtn.setOnClickListener {
             val checkUpPage = Intent(context, CheckUpPage::class.java)
             startActivity(checkUpPage)
+        }
+
+
+
+        val carAddButton = binding.root.findViewById<Button>(R.id.add_CarBtn)
+
+        /*carAddButton.setOnClickListener {
+            val fragment = CarAddFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment_content_main, fragment)
+
+            transaction.addToBackStack(null)
+            transaction.commit()*/
+        val navGraphActivity = activity as MainActivity
+
+        carAddButton.setOnClickListener{
+            navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
         }
     }
 

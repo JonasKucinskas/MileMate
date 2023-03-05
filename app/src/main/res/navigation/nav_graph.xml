@@ -11,8 +11,12 @@
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
         <action
-            android:id="@+id/action_FirstFragment_to_placeholder"
-            app:destination="@id/placeholder" />
+            android:id="@+id/action_FirstFragment_to_CarAddFragment"
+            app:destination="@id/carAddFragmentNav" />
     </fragment>
-    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/carAddFragmentNav"
+        android:label="@string/first_fragment_label"
+        android:name="com.example.milemate.CarAddFragment"
+        tools:layout="@layout/fragment_car_add" />
 </navigation>
