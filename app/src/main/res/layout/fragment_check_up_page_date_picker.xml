@@ -7,15 +7,14 @@
     tools:context=".CheckUpPageDatePickerFragment">
 
 
-
     <DatePicker
         android:id="@+id/CheckUpDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:backgroundTint="@color/gray_main"
         android:datePickerMode="calendar"
-        android:headerBackground="@color/red_dark"/>
-
+        android:headerBackground="@color/red_dark" />
 
 
 </FrameLayout>

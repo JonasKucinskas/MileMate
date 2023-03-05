@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_main"
+    android:orientation="vertical"
     tools:context=".CheckUpPage">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         android:name="com.example.milemate.CheckUpPageDatePickerFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="701dp"
         tools:layout="@layout/fragment_check_up_page_date_picker" />
-</FrameLayout>
+
+    <Button
+        android:id="@+id/CheckUpPageNextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="on_Click_NextButton"
+        android:text="next" />
+
+</LinearLayout>
 
 
