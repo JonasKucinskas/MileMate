@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.milemate.databinding.FragmentFirstBinding
 
@@ -35,6 +36,21 @@ class FirstFragment : Fragment() {
         binding.button.setOnClickListener {
             val checkUpPage = Intent(context, CheckUpPage::class.java)
             startActivity(checkUpPage)
+        }
+
+        val carAddButton = binding.root.findViewById<Button>(R.id.add_CarBtn)
+
+        /*carAddButton.setOnClickListener {
+            val fragment = CarAddFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.nav_host_fragment_content_main, fragment)
+
+            transaction.addToBackStack(null)
+            transaction.commit()*/
+        val navGraphActivity = activity as MainActivity
+
+        carAddButton.setOnClickListener{
+            navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
         }
     }
 
