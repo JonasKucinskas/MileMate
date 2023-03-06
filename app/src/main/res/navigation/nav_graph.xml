@@ -5,19 +5,21 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FirstFragment">
 
+    <!-- First fragment -->
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.milemate.FirstFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first"/>
-    <action
-        android:id="@+id/action_FirstFragment_to_CarAddFragment"
-        app:destination="@id/carAddFragmentNav" />
-    <fragment android:id="@+id/placeholder" />
+        tools:layout="@layout/fragment_first">
+        <action
+            android:id="@+id/action_FirstFragment_to_CarAddFragment"
+            app:destination="@id/carAddFragmentNav" />
+    </fragment>
+
+    <!-- carAddFragmentNav -->
     <fragment
         android:id="@+id/carAddFragmentNav"
         android:label="@string/first_fragment_label"
         android:name="com.example.milemate.CarAddFragment"
         tools:layout="@layout/fragment_car_add" />
-
 </navigation>
