@@ -4,20 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckUpPage"
-    android:background="@color/gray_main">
+    android:background="@color/gray_main"
+    android:orientation="vertical"
+    tools:context=".CheckUpPage">
 
-    <DatePicker
-        android:id="@+id/setCheckUpDatePicker"
-        style="@android:style/Widget.DeviceDefault.DatePicker"
-        android:layout_width="315dp"
-        android:layout_height="93dp"
-        android:onClick="openDatePicker"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.milemate.CheckUpPageDatePickerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="701dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.101" />
+        tools:layout="@layout/fragment_check_up_page_date_picker" />
+
+    <Button
+        android:id="@+id/CheckUpPageNextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="on_Click_NextButton"
+        android:text="next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
