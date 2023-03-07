@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_CarAddFragment"
             app:destination="@id/carAddFragmentNav" />
+        <action
+            android:id="@+id/action_FirstFragment_to_checkUpPageDatePickerFragment2"
+            app:destination="@id/checkUpPageDatePickerFragment2" />
     </fragment>
 
     <!-- carAddFragmentNav -->
@@ -22,4 +25,13 @@
         android:label="@string/first_fragment_label"
         android:name="com.example.milemate.CarAddFragment"
         tools:layout="@layout/fragment_car_add" />
+    <fragment
+        android:id="@+id/checkUpPageDatePickerFragment2"
+        android:name="com.example.milemate.CheckUpPageDatePickerFragment"
+        android:label="fragment_check_up_page_date_picker"
+        tools:layout="@layout/fragment_check_up_page_date_picker" >
+        <action
+            android:id="@+id/action_checkUpPageDatePickerFragment2_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
 </navigation>
