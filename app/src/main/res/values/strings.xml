@@ -16,4 +16,5 @@
 
     <!-- Strings for CarAddFragment -->
     <string name="add_selCar">Add selected car</string>
+    <string name="checkup_page_label">Check-Up</string>
 </resources>
