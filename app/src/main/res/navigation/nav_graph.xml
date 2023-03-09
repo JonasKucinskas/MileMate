@@ -27,9 +27,9 @@
         tools:layout="@layout/fragment_car_add" />
     <fragment
         android:id="@+id/checkUpPageDatePickerFragment2"
-        android:name="com.example.milemate.CheckUpPageDatePickerFragment"
+        android:name="com.example.milemate.CheckUpFragment"
         android:label="fragment_check_up_page_date_picker"
-        tools:layout="@layout/fragment_check_up_page_date_picker" >
+        tools:layout="@layout/fragment_check_up" >
         <action
             android:id="@+id/action_checkUpPageDatePickerFragment2_to_FirstFragment"
             app:destination="@id/FirstFragment" />
