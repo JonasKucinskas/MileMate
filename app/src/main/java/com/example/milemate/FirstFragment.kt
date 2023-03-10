@@ -36,7 +36,7 @@ class FirstFragment : Fragment() {
         val tempButton = view.findViewById<Button>(R.id.tempButton)
 
         tempButton.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_FirstFragment_to_checkUpPageDatePickerFragment2)
+            Navigation.findNavController(view).navigate(R.id.action_FirstFragment_to_checkUpFragment)
         }
 
         val carAddButton = binding.root.findViewById<Button>(R.id.add_CarBtn)
