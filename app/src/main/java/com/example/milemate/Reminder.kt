@@ -1,8 +1,8 @@
 package com.example.milemate
 
-import android.icu.util.Calendar
+import java.util.Date
 
-class Reminder constructor(ReminderDate: Calendar, CheckUpDate: Calendar) {
+class Reminder constructor(ReminderDate: Date, CheckUpDate: Date) {
 
         var reminderDate = ReminderDate
         var checkUpDate = CheckUpDate

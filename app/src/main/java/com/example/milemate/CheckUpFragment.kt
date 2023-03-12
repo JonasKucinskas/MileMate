@@ -77,62 +77,41 @@ class CheckUpFragment : Fragment() {
         val numPickerMonth = view.findViewById<NumberPicker>(R.id.numberPickerMonth)
         val numPickerDay = view.findViewById<NumberPicker>(R.id.numberPickerDay)
 
-
-
         val checkUpSaveBtn = view.findViewById<Button>(R.id.CheckUpSaveBtn)
         val datePicker = view.findViewById<DatePicker>(R.id.CheckUpDatePicker)
 
         val calendar = Calendar.getInstance()
         datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
 
-
         //dynamic adjustment of numPickers. This ensures that negative date can't be set for reminder.
-        datePicker.setOnDateChangedListener { datePicker, Year, Month, Day ->
+        datePicker.setOnDateChangedListener { datePicker, year, month, day ->
 
             //subtract current date from selected date to get time difference.
-            val year = Year - calendar.get(Calendar.YEAR)
-            val month = Month - calendar.get(Calendar.MONTH)
-            val day = Day - calendar.get(Calendar.DAY_OF_MONTH)
+            val yearDiff = year - calendar.get(Calendar.YEAR)
+            val monthDiff = month - calendar.get(Calendar.MONTH)
+            val dayDiff = day - calendar.get(Calendar.DAY_OF_MONTH)
 
             numPickerYear.minValue = 0
-            numPickerYear.maxValue = year
+            numPickerYear.maxValue = yearDiff
 
             numPickerMonth.minValue = 0
-            numPickerMonth.maxValue = month
+            numPickerMonth.maxValue = monthDiff
 
             numPickerDay.minValue = 0
-            numPickerDay.maxValue = day
+            numPickerDay.maxValue = dayDiff
 
             //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
         }
 
         checkUpSaveBtn.setOnClickListener{
 
-            calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)//set calendar object to selected date in datePicker
+            //val dateFormat = getDateTimeInstance()
+            //val reminderDate = dateFormat.format(calendar.time)
 
-            //subtraction from selected date in date picker
-            calendar.add(Calendar.YEAR, -numPickerYear.value)//Current year - numpicker.Year
-            calendar.add(Calendar.MONTH, -numPickerMonth.value)
-            calendar.add(Calendar.DAY_OF_MONTH, -numPickerDay.value)
+            val reminderDate = Date(datePicker.year - numPickerYear.value, datePicker.month - numPickerMonth.value, datePicker.dayOfMonth - numPickerDay.value)
+            val checkUpDate = Date(datePicker.year, datePicker.month, datePicker.dayOfMonth)
 
-
-            val dateFormat = getDateTimeInstance()
-            val reminderDate = dateFormat.format(calendar.time)
-
-            //val reminderObject = Reminder(calendar, calendarSet)
-
-
-            //val output1 = Gson().toJson(reminderObject)
-/*
-            val output: Writer
-            val file = createFile(getApplicationInfo().dataDir)
-            output = BufferedWriter(FileWriter(file))
-            output.write(output1)
-            output.close()
-
-            it.write(output)
-*/
-
+            val reminderObject = Reminder(reminderDate, checkUpDate)
 
             Toast.makeText(activity, "Reminder set for $reminderDate", Toast.LENGTH_SHORT).show()
         }
