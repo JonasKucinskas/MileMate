@@ -39,6 +39,9 @@ class CarAddFragment : Fragment() {
             val carOdometerContent = view.findViewById<EditText>(R.id.textCarOdometer).text.toString()
             FirstCar = Car(carNameContent, carBrandContent, carOdometerContent)
             Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
+            //Sends notification
+            val notificationHelper = NotificationHelper(requireContext())
+            notificationHelper.sendNotification("MileMate", "Car Added successfully!")
         }
 
     }
