@@ -13,8 +13,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
-import com.google.gson.JsonElement
 import java.io.BufferedWriter
+import java.io.File
 import java.io.FileWriter
 import java.util.*
 
@@ -101,7 +101,6 @@ class CheckUpFragment : Fragment() {
             //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
         }
 
-
         checkUpSaveBtn.setOnClickListener{
 
             //val dateFormat = getDateTimeInstance()
@@ -116,14 +115,21 @@ class CheckUpFragment : Fragment() {
             val reminder = Reminder(reminderDate, checkUpDate)
             val reminderJson = Gson().toJson(reminder)
 
-            write(reminderJson)
+            writeToJson(reminderJson, "reminder.json")
 
             Toast.makeText(activity, "Reminder set for ${reminderDate.time}", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun write(json: String){
-        val writer = BufferedWriter(FileWriter(context?.filesDir.toString() + "\\temp.json"))
+    private fun writeToJson(json: String, filename: String){
+
+        var file = File(context?.filesDir.toString() + "/$filename")
+
+        if (file.exists()){
+            file.delete()
+        }
+
+        val writer = BufferedWriter(FileWriter(context?.filesDir.toString() + "/$filename"))
         writer.write(json)
         writer.close()
     }
