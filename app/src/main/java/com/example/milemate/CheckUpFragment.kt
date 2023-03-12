@@ -1,7 +1,5 @@
 package com.example.milemate
 
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
@@ -15,11 +13,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import java.io.BufferedWriter
 import java.io.FileWriter
-import java.io.Writer
-import java.nio.file.Files.createFile
-import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 
 
@@ -91,6 +87,8 @@ class CheckUpFragment : Fragment() {
             val monthDiff = month - calendar.get(Calendar.MONTH)
             val dayDiff = day - calendar.get(Calendar.DAY_OF_MONTH)
 
+
+            //set numPickers to maximum date for reminder
             numPickerYear.minValue = 0
             numPickerYear.maxValue = yearDiff
 
@@ -103,18 +101,30 @@ class CheckUpFragment : Fragment() {
             //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
         }
 
+
         checkUpSaveBtn.setOnClickListener{
 
             //val dateFormat = getDateTimeInstance()
             //val reminderDate = dateFormat.format(calendar.time)
 
-            val reminderDate = Date(datePicker.year - numPickerYear.value, datePicker.month - numPickerMonth.value, datePicker.dayOfMonth - numPickerDay.value)
-            val checkUpDate = Date(datePicker.year, datePicker.month, datePicker.dayOfMonth)
+            val reminderDate = Calendar.getInstance()
+            val checkUpDate = Calendar.getInstance()
 
-            val reminderObject = Reminder(reminderDate, checkUpDate)
+            reminderDate.set(datePicker.year - numPickerYear.value, datePicker.month - numPickerMonth.value, datePicker.dayOfMonth - numPickerDay.value)
+            checkUpDate.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
 
-            Toast.makeText(activity, "Reminder set for $reminderDate", Toast.LENGTH_SHORT).show()
+            val reminder = Reminder(reminderDate, checkUpDate)
+            val reminderJson = Gson().toJson(reminder)
+
+            write(reminderJson)
+
+            Toast.makeText(activity, "Reminder set for ${reminderDate.time}", Toast.LENGTH_SHORT).show()
         }
+    }
 
+    private fun write(json: String){
+        val writer = BufferedWriter(FileWriter(context?.filesDir.toString() + "\\temp.json"))
+        writer.write(json)
+        writer.close()
     }
 }
