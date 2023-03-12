@@ -1,5 +1,7 @@
 package com.example.milemate
 
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +14,11 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
+import java.io.BufferedWriter
+import java.io.FileWriter
+import java.io.Writer
+import java.nio.file.Files.createFile
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 
@@ -78,26 +85,23 @@ class CheckUpFragment : Fragment() {
         val calendar = Calendar.getInstance()
         datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
 
-        val calendarSet = Calendar.getInstance()
 
         //dynamic adjustment of numPickers. This ensures that negative date can't be set for reminder.
-        datePicker.setOnDateChangedListener { datePicker, year, month, day ->
-
-            calendarSet.set(year, month+1, day)//+1, because months start at 1
+        datePicker.setOnDateChangedListener { datePicker, Year, Month, Day ->
 
             //subtract current date from selected date to get time difference.
-            calendarSet.add(Calendar.YEAR, -Calendar.getInstance().get(Calendar.YEAR))
-            calendarSet.add(Calendar.MONTH, -Calendar.getInstance().get(Calendar.MONTH)-1)//-1 because months start at 0
-            calendarSet.add(Calendar.DAY_OF_MONTH, -Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+            val year = Year - calendar.get(Calendar.YEAR)
+            val month = Month - calendar.get(Calendar.MONTH)
+            val day = Day - calendar.get(Calendar.DAY_OF_MONTH)
 
             numPickerYear.minValue = 0
-            numPickerYear.maxValue = calendarSet.get(Calendar.YEAR)//cant set year as 0 (?), so -1 'fixes' it
+            numPickerYear.maxValue = year
 
             numPickerMonth.minValue = 0
-            numPickerMonth.maxValue = calendarSet.get(Calendar.MONTH)
+            numPickerMonth.maxValue = month
 
             numPickerDay.minValue = 0
-            numPickerDay.maxValue = calendarSet.get(Calendar.DAY_OF_MONTH)
+            numPickerDay.maxValue = day
 
             //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
         }
@@ -114,6 +118,21 @@ class CheckUpFragment : Fragment() {
 
             val dateFormat = getDateTimeInstance()
             val reminderDate = dateFormat.format(calendar.time)
+
+            //val reminderObject = Reminder(calendar, calendarSet)
+
+
+            //val output1 = Gson().toJson(reminderObject)
+/*
+            val output: Writer
+            val file = createFile(getApplicationInfo().dataDir)
+            output = BufferedWriter(FileWriter(file))
+            output.write(output1)
+            output.close()
+
+            it.write(output)
+*/
+
 
             Toast.makeText(activity, "Reminder set for $reminderDate", Toast.LENGTH_SHORT).show()
         }
