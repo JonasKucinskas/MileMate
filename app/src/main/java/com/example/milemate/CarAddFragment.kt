@@ -1,15 +1,19 @@
 package com.example.milemate
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.milemate.database.DBManager
+import androidx.appcompat.app.AppCompatActivity
 
 
 class CarAddFragment : Fragment() {
@@ -30,6 +34,14 @@ class CarAddFragment : Fragment() {
         //getting reference to the variable
         val addCarButton = view.findViewById<Button>(R.id.buttonAddCar)
 
+        //Creating spinner for choosing countries
+        val countryOptions = arrayOf("Choose your country", "Lithuania")
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, countryOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val spinner = view.findViewById<Spinner>(R.id.spinner)
+        spinner.adapter = adapter
+        spinner.setSelection(0)
+
         //Button click event to create car object
         addCarButton.setOnClickListener {
             val carNameContent = view.findViewById<EditText>(R.id.textCarName).text.toString()
@@ -40,10 +52,6 @@ class CarAddFragment : Fragment() {
             //Sends notification
             val notificationHelper = NotificationHelper(requireContext())
             notificationHelper.sendNotification("MileMate", "Car Added successfully!")
-
-            // Insert into database
-            var database = ViewModelProvider(this).get(DBManager::class.java);
-            database.insertCar(FirstCar);
         }
 
     }

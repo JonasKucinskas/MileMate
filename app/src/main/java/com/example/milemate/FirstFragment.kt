@@ -12,6 +12,7 @@ import com.example.milemate.databinding.FragmentFirstBinding
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import java.io.File
+import java.util.Calendar
 
 
 /**
@@ -75,6 +76,20 @@ class FirstFragment : Fragment() {
                 val notificationHelper = NotificationHelper(requireContext())
                 notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}")
             }
+        }
+
+        //Temp method for sending notification 1 month and 14days before changing tires
+        val todayDate = Calendar.getInstance()
+        if ((todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
+            (todayDate.get(Calendar.MONTH) + 1 == 4 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
+            val notificationHelper = NotificationHelper(requireContext())
+            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from winter to summer until April 10th")
+        }
+        //Temp method
+        if ((todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
+            (todayDate.get(Calendar.MONTH) + 1 == 11 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
+            val notificationHelper = NotificationHelper(requireContext())
+            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from summer to winter until November 10th")
         }
     }
 
