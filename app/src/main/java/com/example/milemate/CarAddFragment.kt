@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +33,14 @@ class CarAddFragment : Fragment() {
 
         //getting reference to the variable
         val addCarButton = view.findViewById<Button>(R.id.buttonAddCar)
+
+        //Creating spinner for choosing countries
+        val countryOptions = arrayOf("Choose your country", "Lithuania")
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, countryOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val spinner = view.findViewById<Spinner>(R.id.spinner)
+        spinner.adapter = adapter
+        spinner.setSelection(0)
 
         //Button click event to create car object
         addCarButton.setOnClickListener {
