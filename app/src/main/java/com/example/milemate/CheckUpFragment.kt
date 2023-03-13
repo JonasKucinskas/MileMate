@@ -12,7 +12,10 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import java.text.DateFormat.getDateTimeInstance
+import com.google.gson.Gson
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 import java.util.*
 
 
@@ -70,53 +73,64 @@ class CheckUpFragment : Fragment() {
         val numPickerMonth = view.findViewById<NumberPicker>(R.id.numberPickerMonth)
         val numPickerDay = view.findViewById<NumberPicker>(R.id.numberPickerDay)
 
-
-
         val checkUpSaveBtn = view.findViewById<Button>(R.id.CheckUpSaveBtn)
         val datePicker = view.findViewById<DatePicker>(R.id.CheckUpDatePicker)
 
         val calendar = Calendar.getInstance()
         datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
 
-        val calendarSet = Calendar.getInstance()
-
         //dynamic adjustment of numPickers. This ensures that negative date can't be set for reminder.
         datePicker.setOnDateChangedListener { datePicker, year, month, day ->
 
-            calendarSet.set(year, month+1, day)//+1, because months start at 1
-
             //subtract current date from selected date to get time difference.
-            calendarSet.add(Calendar.YEAR, -Calendar.getInstance().get(Calendar.YEAR))
-            calendarSet.add(Calendar.MONTH, -Calendar.getInstance().get(Calendar.MONTH)-1)//-1 because months start at 0
-            calendarSet.add(Calendar.DAY_OF_MONTH, -Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+            val yearDiff = year - calendar.get(Calendar.YEAR)
+            val monthDiff = month - calendar.get(Calendar.MONTH)
+            val dayDiff = day - calendar.get(Calendar.DAY_OF_MONTH)
 
+
+            //set numPickers to maximum date for reminder
             numPickerYear.minValue = 0
-            numPickerYear.maxValue = calendarSet.get(Calendar.YEAR)//cant set year as 0 (?), so -1 'fixes' it
+            numPickerYear.maxValue = yearDiff
 
             numPickerMonth.minValue = 0
-            numPickerMonth.maxValue = calendarSet.get(Calendar.MONTH)
+            numPickerMonth.maxValue = monthDiff
 
             numPickerDay.minValue = 0
-            numPickerDay.maxValue = calendarSet.get(Calendar.DAY_OF_MONTH)
+            numPickerDay.maxValue = dayDiff
 
             //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
         }
 
         checkUpSaveBtn.setOnClickListener{
 
-            calendar.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)//set calendar object to selected date in datePicker
+            //val dateFormat = getDateTimeInstance()
+            //val reminderDate = dateFormat.format(calendar.time)
 
-            //subtraction from selected date in date picker
-            calendar.add(Calendar.YEAR, -numPickerYear.value)//Current year - numpicker.Year
-            calendar.add(Calendar.MONTH, -numPickerMonth.value)
-            calendar.add(Calendar.DAY_OF_MONTH, -numPickerDay.value)
+            val reminderDate = Calendar.getInstance()
+            val checkUpDate = Calendar.getInstance()
 
+            reminderDate.set(datePicker.year - numPickerYear.value, datePicker.month - numPickerMonth.value, datePicker.dayOfMonth - numPickerDay.value)
+            checkUpDate.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
 
-            val dateFormat = getDateTimeInstance()
-            val reminderDate = dateFormat.format(calendar.time)
+            val reminder = Reminder(reminderDate, checkUpDate)
+            val reminderJson = Gson().toJson(reminder)
 
-            Toast.makeText(activity, "Reminder set for $reminderDate", Toast.LENGTH_SHORT).show()
+            writeToJson(reminderJson, "reminder.json")
+
+            Toast.makeText(activity, "Reminder set for ${reminderDate.time}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun writeToJson(json: String, filename: String){
+
+        var file = File(context?.filesDir.toString() + "/$filename")
+
+        if (file.exists()){
+            file.delete()
         }
 
+        val writer = BufferedWriter(FileWriter(context?.filesDir.toString() + "/$filename"))
+        writer.write(json)
+        writer.close()
     }
 }

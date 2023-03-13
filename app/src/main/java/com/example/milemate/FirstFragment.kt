@@ -1,6 +1,7 @@
 package com.example.milemate
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,10 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.milemate.databinding.FragmentFirstBinding
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import java.io.File
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -27,6 +32,7 @@ class FirstFragment : Fragment() {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
+
 
     }
 
@@ -52,6 +58,23 @@ class FirstFragment : Fragment() {
 
         carAddButton.setOnClickListener{
             navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
+        }
+
+
+        //Didn't test but should work
+        var file = File(context?.filesDir.toString() + "/reminder.json")
+
+        //read json object, check if reminder date is today, if yes, send notification.
+
+        if (file.exists()){
+            val inputStream = file.readLines()
+            val jsonObject = JsonParser.parseString(inputStream[0]).asJsonObject
+            val reminder = Gson().fromJson(jsonObject, Reminder::class.java)
+
+            if (DateUtils.isToday(reminder.reminderDate.time)){
+                val notificationHelper = NotificationHelper(requireContext())
+                notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}")
+            }
         }
     }
 
