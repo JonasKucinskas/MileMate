@@ -1,19 +1,13 @@
 package com.example.milemate
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.milemate.database.DBManager
 
 
 class CarAddFragment : Fragment() {
@@ -52,6 +46,10 @@ class CarAddFragment : Fragment() {
             //Sends notification
             val notificationHelper = NotificationHelper(requireContext())
             notificationHelper.sendNotification("MileMate", "Car Added successfully!")
+
+            // Insert into database
+            var database = ViewModelProvider(this).get(DBManager::class.java);
+            database.insertCar(FirstCar);
         }
 
     }
