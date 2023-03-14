@@ -9,8 +9,7 @@ import androidx.core.app.NotificationCompat
 class NotificationHelper(private val context: Context){
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    fun sendNotification(title: String, message: String){
-        val notificationId = 0
+    fun sendNotification(title: String, message: String, id: Int){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val channel = NotificationChannel("my_channel_id", "My Channel", NotificationManager.IMPORTANCE_DEFAULT)
@@ -23,8 +22,6 @@ class NotificationHelper(private val context: Context){
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
-        notificationManager.notify(notificationId, builder.build())
+        notificationManager.notify(id, builder.build())
     }
-
-
 }
