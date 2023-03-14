@@ -18,7 +18,7 @@ import java.util.Calendar
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class TitleFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
 
@@ -29,7 +29,7 @@ class FirstFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
@@ -63,7 +63,7 @@ class FirstFragment : Fragment() {
 
 
         //Didn't test but should work
-        var file = File(context?.filesDir.toString() + "/reminder.json")
+        val file = File(context?.filesDir.toString() + "/reminder.json")
 
         //read json object, check if reminder date is today, if yes, send notification.
 

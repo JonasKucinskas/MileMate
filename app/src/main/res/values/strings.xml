@@ -6,7 +6,7 @@
     <string name="add_car">Add car</string>
     <string name="previous">Previous</string>
 
-    <!-- Strings for FirstFragment -->
+    <!-- Strings for TitleFragment -->
     <string name="no_cars">There are no linked cars to this application. :(</string>
 
     <string name="placeholder">Placeholder</string>
@@ -15,8 +15,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Strings for CarAddFragment -->
-    <string name="add_selCar">Add selected car</string>
+    <string name="add_newCar">Add a new car</string>
     <string name="checkup_fragment_label">Check-Up</string>
     <string name="checkup_fragment_saveBtn">Check-Up</string>
+    <string name="choose_your_country">Choose your country</string>
+    <string name="select_residence">Select your country of residence:</string>
+    <string name="car_name">Car name</string>
+    <string name="car_brand_model">Car brand/model</string>
+    <string name="car_mileage">Car mileage</string>
+    <string name="tempbutton">tempButton</string>
 
 </resources>

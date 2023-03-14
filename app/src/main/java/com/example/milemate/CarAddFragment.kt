@@ -40,16 +40,16 @@ class CarAddFragment : Fragment() {
         addCarButton.setOnClickListener {
             val carNameContent = view.findViewById<EditText>(R.id.textCarName).text.toString()
             val carBrandContent = view.findViewById<EditText>(R.id.textCarBrand).text.toString()
-            val carOdometerContent = view.findViewById<EditText>(R.id.textCarOdometer).text.toString()
-            FirstCar = Car(carNameContent, carBrandContent, carOdometerContent)
+            val carMileageContent = view.findViewById<EditText>(R.id.numberCarMileage).text.toString()
+            FirstCar = Car(carNameContent, carBrandContent, carMileageContent)
             Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
             //Sends notification
             val notificationHelper = NotificationHelper(requireContext())
             notificationHelper.sendNotification("MileMate", "Car Added successfully!")
 
             // Insert into database
-            var database = ViewModelProvider(this).get(DBManager::class.java);
-            database.insertCar(FirstCar);
+            val database = ViewModelProvider(this).get(DBManager::class.java)
+            database.insertCar(FirstCar)
         }
 
     }
@@ -58,7 +58,4 @@ class CarAddFragment : Fragment() {
         super.onDestroyView()
 
     }
-
-
-
 }

@@ -9,62 +9,67 @@
 
     <DatePicker
         android:id="@+id/CheckUpDatePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="305dp"
+        android:layout_height="324dp"
         android:layout_gravity="center"
+        android:layout_marginTop="72dp"
         android:backgroundTint="@color/gray_main"
         android:datePickerMode="calendar"
         android:headerBackground="@color/red_dark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <NumberPicker
-        android:id="@+id/numberPickerYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/numberPickerMonth"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker">
-
-    </NumberPicker>
 
     <NumberPicker
         android:id="@+id/numberPickerMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/numberPickerDay"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/numberPickerYear"
-        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker">
-
-    </NumberPicker>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker"
+        app:layout_constraintVertical_bias="0.079" />
 
     <NumberPicker
         android:id="@+id/numberPickerDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/numberPickerMonth"
-        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker">
+        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker"
+        app:layout_constraintVertical_bias="0.079">
 
     </NumberPicker>
+
+    <NumberPicker
+        android:id="@+id/numberPickerYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/numberPickerMonth"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker"
+        app:layout_constraintVertical_bias="0.079" />
 
     <Button
         android:id="@+id/CheckUpSaveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
         android:text="@string/checkup_fragment_saveBtn"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerMonth" />
+        app:layout_constraintTop_toBottomOf="@+id/numberPickerMonth"
+        app:layout_constraintVertical_bias="0.307" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

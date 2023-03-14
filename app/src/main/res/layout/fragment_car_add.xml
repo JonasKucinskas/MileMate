@@ -8,82 +8,99 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="189dp"
-        android:layout_height="20dp"
+        android:layout_width="183dp"
+        android:layout_height="34dp"
         android:layout_marginBottom="383dp"
-        android:text="@string/add_selCar"
+        android:text="@string/add_newCar"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.42" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="243dp"
+        android:layout_height="25dp"
+        android:text="@string/select_residence"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberCarMileage"
+        app:layout_constraintVertical_bias="0.842" />
 
     <EditText
         android:id="@+id/textCarName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/car_name"
         android:inputType="text"
-        android:hint="Car name here"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.296" />
+        app:layout_constraintVertical_bias="0.296"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/textCarBrand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/car_brand_model"
         android:inputType="text"
-        android:hint="Car brand here"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.44" />
-
-    <EditText
-        android:id="@+id/textCarOdometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Enter odometer"
-        android:textSize="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58" />
+        app:layout_constraintTop_toBottomOf="@+id/textCarName"
+        app:layout_constraintVertical_bias="0.08"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/buttonAddCar"
         android:layout_width="166dp"
         android:layout_height="68dp"
-        android:text="Add car"
         android:onClick="buttonAddCar"
+        android:text="@string/add_car"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.323" />
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="293dp"
         android:layout_height="58dp"
-        android:contentDescription="Choose your country"
+        android:contentDescription="@string/choose_your_country"
         android:labelFor="@+id/spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.736" />
+        app:layout_constraintTop_toBottomOf="@+id/numberCarMileage"
+        app:layout_constraintVertical_bias="0.329" />
+
+    <EditText
+        android:id="@+id/numberCarMileage"
+        android:layout_width="292dp"
+        android:layout_height="56dp"
+        android:ems="10"
+        android:hint="@string/car_mileage"
+        android:inputType="number"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCarBrand"
+        app:layout_constraintVertical_bias="0.111"
+        android:autofillHints="" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
