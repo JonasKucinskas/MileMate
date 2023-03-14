@@ -45,7 +45,7 @@ class CarAddFragment : Fragment() {
             Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
             //Sends notification
             val notificationHelper = NotificationHelper(requireContext())
-            notificationHelper.sendNotification("MileMate", "Car Added successfully!")
+            notificationHelper.sendNotification("MileMate", "Car Added successfully!", 0)
 
             // Insert into database
             val database = ViewModelProvider(this).get(DBManager::class.java)
