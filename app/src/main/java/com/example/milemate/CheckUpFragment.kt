@@ -1,7 +1,6 @@
 package com.example.milemate
 
 import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,12 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.NumberPicker
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import java.util.*
+import kotlin.time.Duration.Companion.days
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -65,7 +63,6 @@ class CheckUpFragment : Fragment() {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -85,7 +82,14 @@ class CheckUpFragment : Fragment() {
             //subtract current date from selected date to get time difference.
             val yearDiff = year - calendar.get(Calendar.YEAR)
             val monthDiff = month - calendar.get(Calendar.MONTH)
-            val dayDiff = day - calendar.get(Calendar.DAY_OF_MONTH)
+            var dayDiff = day - calendar.get(Calendar.DAY_OF_MONTH)
+
+            //if picked date is smaller than current date, recalculate day difference
+            if (dayDiff < 0){
+                val daysOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+                dayDiff = daysOfMonth - currentDay + day
+            }
 
 
             //set numPickers to maximum date for reminder
@@ -123,7 +127,7 @@ class CheckUpFragment : Fragment() {
 
     private fun writeToJson(json: String, filename: String){
 
-        var file = File(context?.filesDir.toString() + "/$filename")
+        val file = File(context?.filesDir.toString() + "/$filename")
 
         if (file.exists()){
             file.delete()
@@ -133,4 +137,5 @@ class CheckUpFragment : Fragment() {
         writer.write(json)
         writer.close()
     }
+
 }
