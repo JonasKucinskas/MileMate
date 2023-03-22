@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import kotlin.time.Duration.Companion.days
+import java.util.concurrent.TimeUnit
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -74,33 +74,42 @@ class CheckUpFragment : Fragment() {
         val datePicker = view.findViewById<DatePicker>(R.id.CheckUpDatePicker)
 
         val calendar = Calendar.getInstance()
+        // set calendar time to midnight otherwise days don't round properly
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0)
+
         datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
 
         //dynamic adjustment of numPickers. This ensures that negative date can't be set for reminder.
         datePicker.setOnDateChangedListener { datePicker, year, month, day ->
 
             //subtract current date from selected date to get time difference.
+            /*
             val yearDiff = year - calendar.get(Calendar.YEAR)
             val monthDiff = month - calendar.get(Calendar.MONTH)
             var dayDiff = day - calendar.get(Calendar.DAY_OF_MONTH)
+            */
+            //set calendar date to picked date in datepicker
+            val calendar2 = Calendar.getInstance()
+            calendar2.set(year, month, day)
 
-            //if picked date is smaller than current date, recalculate day difference
-            if (dayDiff < 0){
-                val daysOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
-                dayDiff = daysOfMonth - currentDay + day
-            }
+            //calculate day difference
+            val msDiff = calendar2.timeInMillis - calendar.timeInMillis
+            val dayDiff = TimeUnit.MILLISECONDS.toDays(msDiff)
 
+            //not very accurate, but it will work for now.
+            val yearDiff = dayDiff / 365
+            val monthDiff = dayDiff / 31
 
             //set numPickers to maximum date for reminder
             numPickerYear.minValue = 0
-            numPickerYear.maxValue = yearDiff
+            numPickerYear.maxValue = yearDiff.toInt()
 
             numPickerMonth.minValue = 0
-            numPickerMonth.maxValue = monthDiff
+            numPickerMonth.maxValue = monthDiff.toInt()
 
             numPickerDay.minValue = 0
-            numPickerDay.maxValue = dayDiff
+            numPickerDay.maxValue = dayDiff.toInt()
+
 
             //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
         }
