@@ -43,7 +43,8 @@ class TitleFragment : Fragment() {
         val tempButton = view.findViewById<Button>(R.id.tempButton)
 
         tempButton.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_FirstFragment_to_checkUpFragment)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_FirstFragment_to_checkUpFragment)
         }
 
         val carAddButton = binding.root.findViewById<Button>(R.id.add_CarBtn)
@@ -57,7 +58,7 @@ class TitleFragment : Fragment() {
             transaction.commit()*/
         val navGraphActivity = activity as MainActivity
 
-        carAddButton.setOnClickListener{
+        carAddButton.setOnClickListener {
             navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
         }
 
@@ -67,30 +68,57 @@ class TitleFragment : Fragment() {
 
         //read json object, check if reminder date is today, if yes, send notification.
 
-        if (file.exists()){
+        if (file.exists()) {
             val inputStream = file.readLines()
             val jsonObject = JsonParser.parseString(inputStream[0]).asJsonObject
             val reminder = Gson().fromJson(jsonObject, Reminder::class.java)
 
-            if (DateUtils.isToday(reminder.reminderDate.time)){
+            if (DateUtils.isToday(reminder.reminderDate.time)) {
                 val notificationHelper = NotificationHelper(requireContext())
-                notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}", 1)
+                notificationHelper.sendNotification(
+                    "Reminder",
+                    "You have check-up in ${reminder.checkUpDate}",
+                    1
+                )
             }
         }
 
         //Temp method for sending notification 1 month and 14days before changing tires
         val todayDate = Calendar.getInstance()
-        if ((todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
-            (todayDate.get(Calendar.MONTH) + 1 == 4 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
+        if ((todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(
+                Calendar.MONTH
+            ) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
+            (todayDate.get(Calendar.MONTH) + 1 == 4 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)
+        ) {
             val notificationHelper = NotificationHelper(requireContext())
-            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from winter to summer until April 10th", 2)
+            notificationHelper.sendNotification(
+                "MileMate",
+                "Don't forget that you need to change tires from winter to summer until April 10th",
+                2
+            )
         }
         //Temp method
-        if ((todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
-            (todayDate.get(Calendar.MONTH) + 1 == 11 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
+        if ((todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(
+                Calendar.MONTH
+            ) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
+            (todayDate.get(Calendar.MONTH) + 1 == 11 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)
+        ) {
             val notificationHelper = NotificationHelper(requireContext())
-            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from summer to winter until November 10th", 3)
+            notificationHelper.sendNotification(
+                "MileMate",
+                "Don't forget that you need to change tires from summer to winter until November 10th",
+                3
+            )
         }
+
+        val notificationHelper1 = NotificationHelper(requireContext())
+        val calendar = android.icu.util.Calendar.getInstance()
+        calendar.set(Calendar.MONTH, 2)
+        calendar.set(Calendar.DAY_OF_MONTH, 3)
+        calendar.set(Calendar.HOUR, 8)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        notificationHelper1.setNotification("MileMate", "Auuuha", calendar, 0)
     }
 
     override fun onDestroyView() {

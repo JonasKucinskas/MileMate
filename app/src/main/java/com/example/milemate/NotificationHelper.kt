@@ -1,8 +1,12 @@
 package com.example.milemate
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Build
 import androidx.core.app.NotificationCompat
 
@@ -23,5 +27,17 @@ class NotificationHelper(private val context: Context){
             .setAutoCancel(true)
 
         notificationManager.notify(id, builder.build())
+    }
+
+    fun setNotification(notificationTitle: String, notificationText: String, notificationDate: android.icu.util.Calendar, notificationId: Int){
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationIntent = Intent(context, NotificationReceiver::class.java)
+        notificationIntent.putExtra("notification_date", notificationDate.timeInMillis)
+        notificationIntent.putExtra("notification_title", notificationTitle)
+        notificationIntent.putExtra("notification_text", notificationText)
+        notificationIntent.putExtra("notification_id", notificationId)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, notificationDate.timeInMillis, pendingIntent)
     }
 }
