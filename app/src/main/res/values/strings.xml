@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MileMate</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_settings">App Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="add_car">Add car</string>
@@ -22,5 +22,21 @@
     <string name="car_brand_model">Car brand/model</string>
     <string name="car_mileage">Car mileage</string>
     <string name="tempbutton">tempButton</string>
+    <string name="user_settings">User Settings</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="enter_driving_license">Enter your driving license expiry date:</string>
 
 </resources>

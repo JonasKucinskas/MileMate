@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true">
+
+
+        <fragment
+            android:id="@+id/main_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="387dp"
+            android:layout_height="609dp"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph" />
+    </FrameLayout>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -20,13 +36,5 @@
             app:popupTheme="@style/Theme.MileMate.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <fragment
-        android:id="@+id/fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

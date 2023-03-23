@@ -38,4 +38,9 @@
             android:id="@+id/action_checkUpFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/userSettingsFragment"
+        android:name="com.example.milemate.UserSettingsFragment"
+        android:label="fragment_user_settings"
+        tools:layout="@layout/fragment_user_settings" /><action android:id="@+id/action_global_userSettingsFragment" app:destination="@id/userSettingsFragment"/>
 </navigation>

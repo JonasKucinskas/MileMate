@@ -56,6 +56,5 @@ class CarAddFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
     }
 }
