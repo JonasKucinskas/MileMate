@@ -1,6 +1,7 @@
 package com.example.milemate
 
 import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +10,14 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.NumberPicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 import java.util.concurrent.TimeUnit
+import kotlin.math.ceil
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -110,8 +113,28 @@ class CheckUpFragment : Fragment() {
             numPickerDay.minValue = 0
             numPickerDay.maxValue = dayDiff.toInt()
 
+        }
 
-            //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
+        numPickerDay.setOnValueChangedListener { numberPicker, changedFromNum, changedToNum ->
+
+            if (changedToNum / 31.0 > 0 && numPickerMonth.maxValue > 0){
+                numPickerMonth.maxValue -= ceil(changedToNum / 31.0).toInt()
+            }
+            else if (changedToNum == 0 && numPickerMonth.maxValue * 31 <= numPickerDay.maxValue){
+                numPickerMonth.maxValue++
+            }
+        }
+
+        numPickerMonth.setOnValueChangedListener { numberPicker, changedFromNum, changedToNum ->
+
+            if (changedToNum > 0){
+                numPickerDay.maxValue -= changedToNum * 31
+            }
+
+            if (changedFromNum > 0){
+                numPickerDay.maxValue += changedFromNum * 31
+            }
+
         }
 
         checkUpSaveBtn.setOnClickListener{
