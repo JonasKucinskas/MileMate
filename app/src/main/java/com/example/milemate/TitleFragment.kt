@@ -61,22 +61,7 @@ class TitleFragment : Fragment() {
             navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
         }
 
-
-        //Didn't test but should work
-        val file = File(context?.filesDir.toString() + "/reminder.json")
-
-        //read json object, check if reminder date is today, if yes, send notification.
-
-        if (file.exists()){
-            val inputStream = file.readLines()
-            val jsonObject = JsonParser.parseString(inputStream[0]).asJsonObject
-            val reminder = Gson().fromJson(jsonObject, Reminder::class.java)
-
-            if (DateUtils.isToday(reminder.reminderDate.time)){
-                val notificationHelper = NotificationHelper(requireContext())
-                notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}", 1)
-            }
-        }
+        reminderChecker()
 
         //Temp method for sending notification 1 month and 14days before changing tires
         val todayDate = Calendar.getInstance()
@@ -96,5 +81,21 @@ class TitleFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun reminderChecker(){//check if reminder file exists, if yes, check date, if date is today, send notification.
+        val file = File(context?.filesDir.toString() + "/reminder.json")
+
+        //read json object, check if reminder date is today, if yes, send notification.
+        if (file.exists()){
+            val inputStream = file.readLines()
+            val jsonObject = JsonParser.parseString(inputStream[0]).asJsonObject
+            val reminder = Gson().fromJson(jsonObject, Reminder::class.java)
+
+            if (DateUtils.isToday(reminder.reminderDate.time)){
+                val notificationHelper = NotificationHelper(requireContext())
+                notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}", 1)
+            }
+        }
     }
 }

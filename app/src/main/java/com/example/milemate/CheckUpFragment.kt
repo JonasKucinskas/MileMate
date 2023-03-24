@@ -15,6 +15,8 @@ import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 import java.util.concurrent.TimeUnit
+import kotlin.math.ceil
+import kotlin.math.floor
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -66,7 +68,6 @@ class CheckUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val numPickerYear = view.findViewById<NumberPicker>(R.id.numberPickerYear)
         val numPickerMonth = view.findViewById<NumberPicker>(R.id.numberPickerMonth)
         val numPickerDay = view.findViewById<NumberPicker>(R.id.numberPickerDay)
 
@@ -78,51 +79,81 @@ class CheckUpFragment : Fragment() {
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0)
 
         datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
-
         //dynamic adjustment of numPickers. This ensures that negative date can't be set for reminder.
+
+        //NOTE: I always assume that all months have 31 days, so sometimes this is innacurate:
+
+        var dayDiff = 0
         datePicker.setOnDateChangedListener { datePicker, year, month, day ->
 
-            //subtract current date from selected date to get time difference.
-            /*
-            val yearDiff = year - calendar.get(Calendar.YEAR)
-            val monthDiff = month - calendar.get(Calendar.MONTH)
-            var dayDiff = day - calendar.get(Calendar.DAY_OF_MONTH)
-            */
-            //set calendar date to picked date in datepicker
             val calendar2 = Calendar.getInstance()
             calendar2.set(year, month, day)
 
             //calculate day difference
             val msDiff = calendar2.timeInMillis - calendar.timeInMillis
-            val dayDiff = TimeUnit.MILLISECONDS.toDays(msDiff)
+            dayDiff = TimeUnit.MILLISECONDS.toDays(msDiff).toInt()
 
             //not very accurate, but it will work for now.
-            val yearDiff = dayDiff / 365
             val monthDiff = dayDiff / 31
 
             //set numPickers to maximum date for reminder
-            numPickerYear.minValue = 0
-            numPickerYear.maxValue = yearDiff.toInt()
 
             numPickerMonth.minValue = 0
-            numPickerMonth.maxValue = monthDiff.toInt()
+            numPickerMonth.maxValue = monthDiff
 
             numPickerDay.minValue = 0
-            numPickerDay.maxValue = dayDiff.toInt()
+            numPickerDay.maxValue = dayDiff
+        }
 
+        numPickerMonth.setOnValueChangedListener { numberPicker, changedFromNum, changedToNum ->
 
-            //TODO Fix numPickers. This is shit implementation. if check-up date is exactly year later, user has to select year in numPickerYear, numPickerMonth will have max num as 0, even tho it should have it as 12.
+            if (changedFromNum - changedToNum == -1){//value increased by 1
+                numPickerDay.maxValue -= 31
+
+            }
+            else if (changedFromNum - changedToNum == 1){//value decreased by one
+                numPickerDay.maxValue += 31
+            }
+            else if (changedFromNum - changedToNum < -1){//value changed from 0 to maxMonth value
+                numPickerDay.maxValue = dayDiff - changedToNum * 31
+            }
+            else if (changedFromNum - changedToNum > 1) {// changed from maxMonth to 0
+                numPickerDay.maxValue = dayDiff
+            }
+
+        }
+
+        numPickerDay.setOnValueChangedListener { numberPicker, changedFromNum, changedToNum ->
+
+            if(changedToNum % 31 == 0 && changedToNum != 0){
+                //62 to 61
+                if (changedFromNum - changedToNum < 0){
+                    numPickerMonth.maxValue--
+                }
+            }
+            else if(changedFromNum % 31 == 0 && changedFromNum != 0){
+                //62 to 61
+                if (changedFromNum - changedToNum > 0){
+                    numPickerMonth.maxValue++
+                }
+
+            }
+            else if (changedFromNum == 0 && changedToNum == dayDiff){
+                numPickerMonth.maxValue = 0
+            }
+            else if (changedFromNum == dayDiff && changedToNum == 0){
+                numPickerMonth.maxValue = dayDiff / 31
+            }
         }
 
         checkUpSaveBtn.setOnClickListener{
 
-            //val dateFormat = getDateTimeInstance()
-            //val reminderDate = dateFormat.format(calendar.time)
-
             val reminderDate = Calendar.getInstance()
             val checkUpDate = Calendar.getInstance()
 
-            reminderDate.set(datePicker.year - numPickerYear.value, datePicker.month - numPickerMonth.value, datePicker.dayOfMonth - numPickerDay.value)
+            //birką dėjau ant datų
+
+            reminderDate.set(datePicker.year, datePicker.month - numPickerMonth.value, datePicker.dayOfMonth - numPickerDay.value)
             checkUpDate.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
 
             val reminder = Reminder(reminderDate, checkUpDate)

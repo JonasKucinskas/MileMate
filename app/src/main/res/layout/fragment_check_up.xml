@@ -10,9 +10,8 @@
     <DatePicker
         android:id="@+id/CheckUpDatePicker"
         android:layout_width="303dp"
-        android:layout_height="244dp"
+        android:layout_height="333dp"
         android:layout_gravity="center"
-        android:layout_marginTop="60dp"
         android:backgroundTint="@color/gray_main"
         android:datePickerMode="calendar"
         android:headerBackground="@color/red_dark"
@@ -21,42 +20,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <NumberPicker
-        android:id="@+id/numberPickerMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker"
-        app:layout_constraintVertical_bias="0.079" />
-
-    <NumberPicker
         android:id="@+id/numberPickerDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/numberPickerMonth"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/numberPickerMonth"
-        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker"
-        app:layout_constraintVertical_bias="0.079">
+        app:layout_constraintTop_toTopOf="@+id/numberPickerMonth">
 
     </NumberPicker>
 
     <NumberPicker
-        android:id="@+id/numberPickerYear"
+        android:id="@+id/numberPickerMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/numberPickerMonth"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toTopOf="@+id/CheckUpSaveBtn"
+        app:layout_constraintEnd_toStartOf="@+id/numberPickerDay"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker"
-        app:layout_constraintVertical_bias="0.079" />
+        app:layout_constraintTop_toBottomOf="@+id/CheckUpDatePicker" />
 
     <Button
         android:id="@+id/CheckUpSaveBtn"
@@ -67,8 +51,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerMonth"
-        app:layout_constraintVertical_bias="0.307" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
