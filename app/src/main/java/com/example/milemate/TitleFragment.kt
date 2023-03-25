@@ -92,7 +92,18 @@ class TitleFragment : Fragment() {
             val jsonObject = JsonParser.parseString(inputStream[0]).asJsonObject
             val reminder = Gson().fromJson(jsonObject, Reminder::class.java)
 
+            //send notification if reminder date is today
             if (DateUtils.isToday(reminder.reminderDate.time)){
+                val notificationHelper = NotificationHelper(requireContext())
+                notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}", 1)
+            }
+            //send notification 1 day before checkupDate
+            else if (DateUtils.isToday(reminder.checkUpDate.time - 86400000)){//86400000 = 1 day in ms
+                val notificationHelper = NotificationHelper(requireContext())
+                notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}", 1)
+            }
+            //send notification 14 days before checkupDate
+            else if (DateUtils.isToday(reminder.checkUpDate.time - 1209600000)){//1209600000 = 2 weeks in ms
                 val notificationHelper = NotificationHelper(requireContext())
                 notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}", 1)
             }

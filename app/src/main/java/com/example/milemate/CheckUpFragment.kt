@@ -108,8 +108,6 @@ class CheckUpFragment : Fragment() {
 
         numPickerMonth.setOnValueChangedListener { numberPicker, changedFromNum, changedToNum ->
 
-
-
             if (changedFromNum - changedToNum == -1){//value increased by 1
                 numPickerDay.maxValue -= 31
 
