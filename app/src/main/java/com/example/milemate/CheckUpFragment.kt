@@ -107,7 +107,6 @@ class CheckUpFragment : Fragment() {
         }
 
         numPickerMonth.setOnValueChangedListener { numberPicker, changedFromNum, changedToNum ->
-
             if (changedFromNum - changedToNum == -1){//value increased by 1
                 numPickerDay.maxValue -= 31
 
@@ -121,6 +120,7 @@ class CheckUpFragment : Fragment() {
             else if (changedFromNum == monthDiff && changedToNum == 0) {// changed from maxMonth to 0
                 numPickerDay.maxValue = dayDiff
             }
+
 
         }
 
@@ -161,21 +161,21 @@ class CheckUpFragment : Fragment() {
             val reminder = Reminder(reminderDate, checkUpDate)
             val reminderJson = Gson().toJson(reminder)
 
-            writeToJson(reminderJson, "reminder.json")
+            writeToJson(reminderJson)
 
             Toast.makeText(activity, "Reminder set for ${reminderDate.time}", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun writeToJson(json: String, filename: String){
+    private fun writeToJson(json: String){
 
-        val file = File(context?.filesDir.toString() + "/$filename")
+        val file = File(context?.filesDir.toString() + "/reminder.json")
 
         if (file.exists()){
             file.delete()
         }
 
-        val writer = BufferedWriter(FileWriter(context?.filesDir.toString() + "/$filename"))
+        val writer = BufferedWriter(FileWriter(context?.filesDir.toString() + "/reminder.json"))
         writer.write(json)
         writer.close()
     }
