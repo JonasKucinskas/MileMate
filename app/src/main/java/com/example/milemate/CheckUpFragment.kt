@@ -84,6 +84,7 @@ class CheckUpFragment : Fragment() {
         //NOTE: I always assume that all months have 31 days, so sometimes this is innacurate:
 
         var dayDiff = 0
+        var monthDiff = 0
         datePicker.setOnDateChangedListener { datePicker, year, month, day ->
 
             val calendar2 = Calendar.getInstance()
@@ -94,7 +95,7 @@ class CheckUpFragment : Fragment() {
             dayDiff = TimeUnit.MILLISECONDS.toDays(msDiff).toInt()
 
             //not very accurate, but it will work for now.
-            val monthDiff = dayDiff / 31
+            monthDiff = dayDiff / 31
 
             //set numPickers to maximum date for reminder
 
@@ -114,10 +115,10 @@ class CheckUpFragment : Fragment() {
             else if (changedFromNum - changedToNum == 1){//value decreased by one
                 numPickerDay.maxValue += 31
             }
-            else if (changedFromNum - changedToNum < -1){//value changed from 0 to maxMonth value
+            else if (changedFromNum == 0 && changedToNum == monthDiff){//value changed from 0 to maxMonth value
                 numPickerDay.maxValue = dayDiff - changedToNum * 31
             }
-            else if (changedFromNum - changedToNum > 1) {// changed from maxMonth to 0
+            else if (changedFromNum == monthDiff && changedToNum == 0) {// changed from maxMonth to 0
                 numPickerDay.maxValue = dayDiff
             }
 
@@ -125,22 +126,23 @@ class CheckUpFragment : Fragment() {
 
         numPickerDay.setOnValueChangedListener { numberPicker, changedFromNum, changedToNum ->
 
+            //if changedToNum is dividable by 31 (end of month) and number increased - subtract 1 from month max value
             if(changedToNum % 31 == 0 && changedToNum != 0){
-                //62 to 61
                 if (changedFromNum - changedToNum < 0){
                     numPickerMonth.maxValue--
                 }
             }
+            //if changedToNum is dividable by 31 (end of month) and number decreased - add 1 to month max value
             else if(changedFromNum % 31 == 0 && changedFromNum != 0){
-                //62 to 61
                 if (changedFromNum - changedToNum > 0){
                     numPickerMonth.maxValue++
                 }
-
             }
+            //if num changed from 0 to maxvalue, set month max to 0
             else if (changedFromNum == 0 && changedToNum == dayDiff){
                 numPickerMonth.maxValue = 0
             }
+            //if num changed from maxvalue to 0, set month max to dayDiff
             else if (changedFromNum == dayDiff && changedToNum == 0){
                 numPickerMonth.maxValue = dayDiff / 31
             }
