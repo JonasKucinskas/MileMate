@@ -1,18 +1,29 @@
 package com.example.milemate
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
 
 
 class CarAddFragment : Fragment() {
 
     private var FirstCar = Car("", "", "")
+    private var carImage: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,31 +38,60 @@ class CarAddFragment : Fragment() {
 
         //getting reference to the variable
         val addCarButton = view.findViewById<Button>(R.id.buttonAddCar)
+        val imageUploadButton = view.findViewById<Button>(R.id.carAddSelectImage)
 
-        //Creating spinner for choosing countries
-        val countryOptions = arrayOf("Choose your country", "Lithuania")
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, countryOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val spinner = view.findViewById<Spinner>(R.id.spinner)
-        spinner.adapter = adapter
-        spinner.setSelection(0)
+        imageUploadButton.setOnClickListener(){
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = "android.intent.action.PICK"
+            startActivityForResult(intent, 100)
+        }
 
         //Button click event to create car object
         addCarButton.setOnClickListener {
             val carNameContent = view.findViewById<EditText>(R.id.textCarName).text.toString()
             val carBrandContent = view.findViewById<EditText>(R.id.textCarBrand).text.toString()
             val carMileageContent = view.findViewById<EditText>(R.id.numberCarMileage).text.toString()
+
             FirstCar = Car(carNameContent, carBrandContent, carMileageContent)
             Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
+
             //Sends notification
             val notificationHelper = NotificationHelper(requireContext())
             notificationHelper.sendNotification("MileMate", "Car Added successfully!", 0)
+
+            writeCarImage(carImage, carNameContent)
 
             // Insert into database
             val database = ViewModelProvider(this).get(DBManager::class.java)
             database.insertCar(FirstCar)
         }
 
+    }
+    @RequiresApi(Build.VERSION_CODES.P)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100) {
+            carImage = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, data?.data)
+        }
+    }
+
+    fun writeCarImage(carImage: Bitmap?, fileName: String){
+
+        if (carImage != null) {
+            val root: String = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+            ).toString()
+            val myDir = File(context?.filesDir.toString()+"/saved_images")
+            myDir.mkdirs()
+            val fname = "$fileName.jpg"
+            val file = File(myDir, fname)
+
+            val out = FileOutputStream(file)
+            carImage.compress(Bitmap.CompressFormat.JPEG, 100, out)
+            out.flush()
+            out.close()
+        }
     }
 
     override fun onDestroyView() {
