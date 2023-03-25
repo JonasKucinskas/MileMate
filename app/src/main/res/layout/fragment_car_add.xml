@@ -11,7 +11,7 @@
         android:layout_width="183dp"
         android:layout_height="34dp"
         android:layout_marginBottom="383dp"
-        android:text="@string/add_newCar"
+        android:text="@string/add_newCar_label"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
