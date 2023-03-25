@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.example.milemate.database.DBManager
 import com.example.milemate.databinding.FragmentFirstBinding
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -73,6 +76,24 @@ class TitleFragment : Fragment() {
             val notificationHelper = NotificationHelper(requireContext())
             notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from summer to winter until November 10th", 3)
         }
+
+
+
+
+
+        val viewModel = ViewModelProvider(this).get(DBManager::class.java)
+
+
+        viewModel.getAllCars().observe(viewLifecycleOwner)
+        { cars ->
+            // Cia accessint whatever car data
+            for (car in cars) {
+
+                val myTextView = view.findViewById<TextView>(R.id.textview_first)
+                myTextView.text = car.brand
+            }
+        }
+
     }
 
     override fun onDestroyView() {

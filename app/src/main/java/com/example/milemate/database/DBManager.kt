@@ -2,23 +2,33 @@ package com.example.milemate.database
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DBManager(application: Application) : AndroidViewModel(application) {
-    private var database : CarDatabase;
+    private var database : CarDatabase
 
     init{
-        database = CarDatabase.getDatabase(application);
+        database = CarDatabase.getDatabase(application)
     }
 
     fun insertCar(car : com.example.milemate.Car){
         viewModelScope.launch(Dispatchers.IO) {
-            val carToInsert = Car(0, car.carName, car.carBrand, car.carMileage.toInt());
-            database.carDao().insertCar(carToInsert);
+            val carToInsert = Car(0, car.carName, car.carBrand, car.carMileage.toInt())
+            database.carDao().insertCar(carToInsert)
         }
     }
+
+    fun getAllCars(): LiveData<List<Car>> {
+        return database.carDao().getAllCars()
+    }
+
+    /*val allItems: LiveData<List<Car : car>>
+    fun getAllItems(): LiveData<List<>> {
+        return CarDatabase.getAllItems()
+    }*/
 
     //Checks if data (cars) is present in database
     fun hasData(): Boolean {
