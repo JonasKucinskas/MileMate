@@ -29,11 +29,11 @@
         />
 
     <Button
-        android:id="@+id/tempButton"
+        android:id="@+id/check_UpBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:text="@string/tempbutton"
+        android:text="@string/check_UpBtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
