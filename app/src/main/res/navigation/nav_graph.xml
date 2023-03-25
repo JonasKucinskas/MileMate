@@ -5,6 +5,14 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/FirstFragment">
 
+    <!-- Actions that work for every fragment out there -->
+    <action
+        android:id="@+id/action_AnyFragment_to_UserSettings"
+        app:destination="@id/UserSettingsNav" />
+    <action
+        android:id="@+id/action_AnyFragment_to_AppSettings"
+        app:destination="@id/AppSettingsNav" />
+
     <!-- First fragment -->
     <fragment
         android:id="@+id/FirstFragment"
@@ -16,21 +24,23 @@
             app:destination="@id/carAddFragmentNav" />
         <action
             android:id="@+id/action_FirstFragment_to_checkUpFragment"
-            app:destination="@id/checkUpFragment" />
+            app:destination="@id/checkUpFragmentNav" />
     </fragment>
 
     <!-- carAddFragmentNav -->
     <fragment
         android:id="@+id/carAddFragmentNav"
-        android:label="@string/first_fragment_label"
+        android:label="@string/add_newCar_label"
         android:name="com.example.milemate.CarAddFragment"
         tools:layout="@layout/fragment_car_add" >
         <action
             android:id="@+id/action_carAddFragmentNav_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+
+    <!-- CheckUpFragmentNav -->
     <fragment
-        android:id="@+id/checkUpFragment"
+        android:id="@+id/checkUpFragmentNav"
         android:name="com.example.milemate.CheckUpFragment"
         android:label="@string/checkup_fragment_label"
         tools:layout="@layout/fragment_check_up" >
@@ -38,9 +48,20 @@
             android:id="@+id/action_checkUpFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+
+    <!-- UserSettingsNav -->
     <fragment
-        android:id="@+id/userSettingsFragment"
+        android:id="@+id/UserSettingsNav"
         android:name="com.example.milemate.UserSettingsFragment"
         android:label="fragment_user_settings"
-        tools:layout="@layout/fragment_user_settings" /><action android:id="@+id/action_global_userSettingsFragment" app:destination="@id/userSettingsFragment"/>
+        tools:layout="@layout/fragment_user_settings" >
+    </fragment>
+
+    <!-- AppSettingsNav -->
+    <fragment
+        android:id="@+id/AppSettingsNav"
+        android:name="com.example.milemate.AppSettingsFragment"
+        android:label="fragment_app_settings" >
+    </fragment>
+
 </navigation>

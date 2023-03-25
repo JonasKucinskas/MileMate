@@ -13,16 +13,19 @@
     <string name="check_up_expiry_date">Check Up Expiry Date</string>
 
     <!-- Strings for CarAddFragment -->
-    <string name="add_newCar">Add a new car</string>
-    <string name="checkup_fragment_label">Check-Up</string>
-    <string name="checkup_fragment_saveBtn">Check-Up</string>
+    <string name="add_newCar_label">Add a new car</string>
     <string name="choose_your_country">Choose your country</string>
     <string name="select_residence">Select your country of residence:</string>
     <string name="car_name">Car name</string>
     <string name="car_brand_model">Car brand/model</string>
     <string name="car_mileage">Car mileage</string>
-    <string name="tempbutton">tempButton</string>
     <string name="user_settings">User Settings</string>
+
+    <!-- Strings for CheckUpFragment -->
+    <string name="checkup_fragment_label">Check-Up</string>
+    <string name="checkup_fragment_saveBtn">Check-Up</string>
+    <string name="check_UpBtn">Check-Up</string>
+
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
