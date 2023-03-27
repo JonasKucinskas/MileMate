@@ -86,6 +86,7 @@ class TitleFragment : Fragment() {
 
         viewModel.getAllCars().observe(viewLifecycleOwner)
         { cars ->
+            // TODO: Add car images (hopefully linked to cars) to each of 4 car elements
             // Cia accessint whatever car data
             for (car in cars) {
 

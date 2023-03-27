@@ -43,5 +43,10 @@
     <string name="enter_driving_license">Enter your driving license expiry date:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="car_3">Car 3</string>
+    <string name="car_4">Car 4</string>
+    <string name="car_1">Car 1</string>
+    <string name="car_2">Car 2</string>
+    <string name="remove_car">Remove car</string>
 
 </resources>

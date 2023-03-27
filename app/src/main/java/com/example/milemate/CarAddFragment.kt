@@ -17,8 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
 import java.io.File
 import java.io.FileOutputStream
-import java.io.FileWriter
-
 
 class CarAddFragment : Fragment() {
 
