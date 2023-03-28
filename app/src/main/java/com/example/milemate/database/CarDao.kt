@@ -13,6 +13,9 @@ interface CarDao {
 
     @Insert
     fun insertCar(car: Car)
+    @Query("SELECT count(*) FROM car")
+    fun getCarsCount() : Int
+
     @Delete
     fun deleteCar(car: Car)
     @Query("SELECT * FROM car")
