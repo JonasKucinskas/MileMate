@@ -2,7 +2,6 @@ package com.example.milemate
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.text.Layout
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -91,8 +90,8 @@ class TitleFragment : Fragment() {
 
 
         val viewModel = ViewModelProvider(this).get(DBManager::class.java)
+        val noCarsTextview = view.findViewById<TextView>(R.id.textview_first)
         var carCount = 0;
-        disableAllCarRemoveButtons()
 
         viewModel.getAllCars().observe(viewLifecycleOwner)
         { cars ->
@@ -106,7 +105,7 @@ class TitleFragment : Fragment() {
 
                 // Loads image onto carPlaceHolders
                 val imagePath = getString(R.string.saved_images)
-                val layoutID = "Car${car.id}Layout"
+                val layoutID = "Car${carCount+1}Layout"
                 // Makes placeholder visible if car is found
                 val carLayout = view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(resources.getIdentifier(layoutID,
                     "id", activity?.packageName))
@@ -114,7 +113,8 @@ class TitleFragment : Fragment() {
 
                 var idCarImageButton = resources.getIdentifier(String.format("carImgPlaceHolder%d", carCount+1), "id", activity?.packageName)
                 val idRemoveButton: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", carCount+1), "id", activity?.packageName)
-                view?.findViewById<ImageButton>(idCarImageButton)?.isVisible = true;
+                view.findViewById<ImageButton>(idCarImageButton)?.isVisible = true;
+                view.findViewById<ImageButton>(idRemoveButton)?.isVisible = true;
 
 
                 val bitmap = BitmapFactory.decodeFile(imagePath + "/" + car.name + ".jpg")
@@ -125,7 +125,10 @@ class TitleFragment : Fragment() {
 
                 // When pressed on image X button of car object
                 xButton.setOnClickListener{
-
+                    viewModel.deleteCar(car)
+                    deleteCarImage(car.name)
+                    // Refresh fragment to update elements
+                    navGraphActivity.navController.navigate(R.id.action_FirstFragment_self)
                 }
                 // When pressed on image button of car object
                 carButton.setOnClickListener{
@@ -136,7 +139,6 @@ class TitleFragment : Fragment() {
             }
 
             if(carCount > 0){
-                val noCarsTextview = view.findViewById<TextView>(R.id.textview_first)
                 noCarsTextview.isVisible = false
             }else{
                 disableAllCarPlaceholders()
@@ -189,5 +191,13 @@ class TitleFragment : Fragment() {
             view?.findViewById<ImageButton>(id)?.isVisible = false;
         }
     }
+
+    private fun deleteCarImage(name : String){
+        val file = File(context?.filesDir.toString()+"/saved_images/"+name+".jpg")
+        if (file.exists()) {
+            file.delete()
+        }
+    }
+
 
 }

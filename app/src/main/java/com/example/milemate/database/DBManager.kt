@@ -1,6 +1,7 @@
 package com.example.milemate.database
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -21,10 +22,19 @@ class DBManager(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun deleteCar(car : com.example.milemate.Car){
+    fun deleteCar(car : Car){
         viewModelScope.launch(Dispatchers.IO) {
-            //database.carDao().deleteCar(car)
+            database.carDao().deleteCar(car)
+            Log.d("Test", "Deletinam")
         }
+    }
+
+    fun getCarsCount() : Int{
+        var count : Int = 0
+        viewModelScope.launch(Dispatchers.IO) {
+            count = database.carDao().getCarsCount()
+        }
+        return count
     }
 
     fun getAllCars(): LiveData<List<Car>> {

@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_carFragment"
             app:destination="@id/carFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_self"
+            app:destination="@id/FirstFragment" />
     </fragment>
 
     <!-- carAddFragmentNav -->
