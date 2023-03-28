@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_checkUpFragment"
             app:destination="@id/checkUpFragmentNav" />
+        <action
+            android:id="@+id/action_FirstFragment_to_carFragment"
+            app:destination="@id/carFragment" />
     </fragment>
 
     <!-- carAddFragmentNav -->
@@ -62,6 +65,17 @@
         android:id="@+id/AppSettingsNav"
         android:name="com.example.milemate.AppSettingsFragment"
         android:label="fragment_app_settings" >
+    </fragment>
+
+    <!-- CarFragmentNav -->
+    <fragment
+        android:id="@+id/carFragment"
+        android:name="com.example.milemate.database.CarFragment"
+        android:label="fragment_car"
+        tools:layout="@layout/fragment_car" >
+        <action
+            android:id="@+id/action_carFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
     </fragment>
 
 </navigation>

@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -16,7 +17,7 @@ import com.example.milemate.databinding.FragmentFirstBinding
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import java.io.File
-import java.util.Calendar
+import java.util.*
 
 
 /**
@@ -25,6 +26,7 @@ import java.util.Calendar
 class TitleFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
+    val maxCars = 4;
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -79,11 +81,9 @@ class TitleFragment : Fragment() {
         }
 
 
-
-
-
         val viewModel = ViewModelProvider(this).get(DBManager::class.java)
-
+        var carCount = 0;
+        disableAllCarRemoveButtons()
 
         viewModel.getAllCars().observe(viewLifecycleOwner)
         { cars ->
@@ -91,11 +91,30 @@ class TitleFragment : Fragment() {
             // Cia accessint whatever car data
             for (car in cars) {
 
-                val myTextView = view.findViewById<TextView>(R.id.textview_first)
-                myTextView.text = car.brand
+                if(carCount > maxCars-1){
+                    break
+                }
+
+                var id: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", carCount+1), "id", activity?.packageName)
+                view?.findViewById<ImageButton>(id)?.isVisible = true;
+
+                id = resources.getIdentifier(String.format("carImgPlaceHolder%d", carCount+1), "id", activity?.packageName)
+                val carButton = view.findViewById<ImageButton>(id);
+
+                carButton.setOnClickListener{
+                    navGraphActivity.navController.navigate(R.id.carFragment)
+                }
+
+                carCount++;
+            }
+
+            if(carCount > 0){
+                val noCarsTextview = view.findViewById<TextView>(R.id.textview_first)
+                noCarsTextview.isVisible = false
+            }else{
+                disableAllCarPlaceholders()
             }
         }
-
     }
 
     override fun onDestroyView() {
@@ -127,6 +146,20 @@ class TitleFragment : Fragment() {
                 val notificationHelper = NotificationHelper(requireContext())
                 notificationHelper.sendNotification("Reminder", "You have check-up in ${reminder.checkUpDate}", 1)
             }
+        }
+    }
+
+    private fun disableAllCarPlaceholders(){
+        for(i in 0..maxCars){
+            val id: Int = resources.getIdentifier(String.format("carImgPlaceHolder%d", i+1), "id", activity?.packageName)
+            view?.findViewById<ImageButton>(id)?.isVisible = false;
+        }
+    }
+
+    private fun disableAllCarRemoveButtons(){
+        for(i in 0..maxCars){
+            val id: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", i+1), "id", activity?.packageName)
+            view?.findViewById<ImageButton>(id)?.isVisible = false;
         }
     }
 

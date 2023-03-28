@@ -132,12 +132,12 @@
             android:id="@+id/carImgPlaceHolder1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/car_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@android:drawable/ic_input_add"
-            android:contentDescription="@string/car_1" />
+            tools:src="@android:drawable/ic_input_add" />
 
         <ImageButton
             android:id="@+id/carRemoveImgBtn1"
