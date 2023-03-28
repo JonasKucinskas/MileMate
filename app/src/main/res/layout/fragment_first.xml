@@ -10,6 +10,8 @@
         android:id="@+id/Car4Layout"
         android:layout_width="175dp"
         android:layout_height="156dp"
+        android:alpha="1"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.932"
@@ -21,25 +23,25 @@
             android:id="@+id/carImgPlaceHolder4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/car_4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@android:drawable/ic_input_add"
-            android:contentDescription="@string/car_4" />
+            tools:src="@android:drawable/ic_input_add" />
 
         <ImageButton
             android:id="@+id/carRemoveImgBtn4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/remove_car"
             android:src="@android:drawable/btn_dialog"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/carImgPlaceHolder4"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            android:contentDescription="@string/remove_car"/>
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -47,6 +49,8 @@
         android:id="@+id/Car3Layout"
         android:layout_width="175dp"
         android:layout_height="156dp"
+        android:alpha="1"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.067"
@@ -58,25 +62,25 @@
             android:id="@+id/carImgPlaceHolder3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/car_3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@android:drawable/ic_input_add"
-            android:contentDescription="@string/car_3" />
+            tools:src="@android:drawable/ic_input_add" />
 
         <ImageButton
             android:id="@+id/carRemoveImgBtn3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/remove_car"
             android:src="@android:drawable/btn_dialog"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            android:contentDescription="@string/remove_car"/>
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -84,6 +88,8 @@
         android:id="@+id/Car2Layout"
         android:layout_width="175dp"
         android:layout_height="156dp"
+        android:alpha="1"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.932"
@@ -95,25 +101,25 @@
             android:id="@+id/carImgPlaceHolder2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/car_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@android:drawable/ic_input_add"
-            android:contentDescription="@string/car_2" />
+            tools:src="@android:drawable/ic_input_add" />
 
         <ImageButton
             android:id="@+id/carRemoveImgBtn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/remove_car"
             android:src="@android:drawable/btn_dialog"
             app:layout_constraintBottom_toBottomOf="@+id/carImgPlaceHolder2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            android:contentDescription="@string/remove_car"/>
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -121,6 +127,8 @@
         android:id="@+id/Car1Layout"
         android:layout_width="175dp"
         android:layout_height="156dp"
+        android:alpha="1"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.067"
@@ -143,14 +151,14 @@
             android:id="@+id/carRemoveImgBtn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/remove_car"
             android:src="@android:drawable/btn_dialog"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            android:contentDescription="@string/remove_car" />
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

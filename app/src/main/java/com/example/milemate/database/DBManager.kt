@@ -21,6 +21,12 @@ class DBManager(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun deleteCar(car : com.example.milemate.Car){
+        viewModelScope.launch(Dispatchers.IO) {
+            //database.carDao().deleteCar(car)
+        }
+    }
+
     fun getAllCars(): LiveData<List<Car>> {
         return database.carDao().getAllCars()
     }

@@ -1,6 +1,8 @@
 package com.example.milemate
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.Layout
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +47,13 @@ class TitleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Makes all layouts disabled
+        //for (num in 0..4) {
+        //    val id = resources.getIdentifier(String.format("Car%dLayout", num+1),
+        //        "id", activity?.packageName)
+        //    view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(id).isVisible = false
+        //}
 
         val navGraphActivity = activity as MainActivity
 
@@ -95,12 +104,30 @@ class TitleFragment : Fragment() {
                     break
                 }
 
-                var id: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", carCount+1), "id", activity?.packageName)
-                view?.findViewById<ImageButton>(id)?.isVisible = true;
+                // Loads image onto carPlaceHolders
+                val imagePath = getString(R.string.saved_images)
+                val layoutID = "Car${car.id}Layout"
+                // Makes placeholder visible if car is found
+                val carLayout = view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(resources.getIdentifier(layoutID,
+                    "id", activity?.packageName))
+                carLayout.visibility = View.VISIBLE
 
-                id = resources.getIdentifier(String.format("carImgPlaceHolder%d", carCount+1), "id", activity?.packageName)
-                val carButton = view.findViewById<ImageButton>(id);
+                var idCarImageButton = resources.getIdentifier(String.format("carImgPlaceHolder%d", carCount+1), "id", activity?.packageName)
+                val idRemoveButton: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", carCount+1), "id", activity?.packageName)
+                view?.findViewById<ImageButton>(idCarImageButton)?.isVisible = true;
 
+
+                val bitmap = BitmapFactory.decodeFile(imagePath + "/" + car.name + ".jpg")
+                val carButton = view.findViewById<ImageButton>(idCarImageButton)
+                val xButton = view.findViewById<ImageButton>(idRemoveButton)
+
+                carButton.setImageBitmap(bitmap)
+
+                // When pressed on image X button of car object
+                xButton.setOnClickListener{
+
+                }
+                // When pressed on image button of car object
                 carButton.setOnClickListener{
                     navGraphActivity.navController.navigate(R.id.carFragment)
                 }

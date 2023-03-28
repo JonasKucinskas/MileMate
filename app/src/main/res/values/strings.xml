@@ -48,5 +48,6 @@
     <string name="car_1">Car 1</string>
     <string name="car_2">Car 2</string>
     <string name="remove_car">Remove car</string>
+    <string name="saved_images">/data/user/0/com.example.milemate/files/saved_images</string>
 
 </resources>
