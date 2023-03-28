@@ -50,4 +50,13 @@
     <string name="remove_car">Remove car</string>
     <string name="saved_images">/data/user/0/com.example.milemate/files/saved_images</string>
 
+    <!-- Strings for user settings -->
+    <string-array name="array_regions">
+        <item>Lithuania</item>
+        <item>Latvia</item>
+        <item>Estonia</item>
+        <item>Poland</item>
+        <item>Germany</item>
+        <item>Sweden</item>
+    </string-array>
 </resources>

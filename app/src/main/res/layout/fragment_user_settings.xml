@@ -12,13 +12,14 @@
         android:layout_width="293dp"
         android:layout_height="58dp"
         android:contentDescription="@string/choose_your_country"
+        android:dropDownWidth="wrap_content"
         android:labelFor="@+id/spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.135"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switchResidenceUsrSet"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintVertical_bias="0.03" />
 
     <Switch
         android:id="@+id/switchResidenceUsrSet"
