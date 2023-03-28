@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import com.example.milemate.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,6 +37,7 @@ class CarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        view?.findViewById<TextView>(R.id.textViewDaysCar)?.text = ARG_PARAM2
         return inflater.inflate(R.layout.fragment_car, container, false)
     }
 

@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.example.milemate.database.CarFragment
 import com.example.milemate.database.DBManager
 import com.example.milemate.databinding.FragmentFirstBinding
 import com.google.gson.Gson
@@ -112,6 +113,7 @@ class TitleFragment : Fragment() {
                 }
                 // When pressed on image button of car object
                 carButton.setOnClickListener{
+                    CarFragment.newInstance("xujne", "parametrai")
                     navGraphActivity.navController.navigate(R.id.carFragment)
                 }
 
