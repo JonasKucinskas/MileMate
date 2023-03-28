@@ -77,7 +77,8 @@ class TitleFragment : Fragment() {
                 }
 
                 // Loads image onto carPlaceHolders
-                val imagePath = getString(R.string.saved_images)
+                val ImageFolder = getString(R.string.saved_images)
+                val CurrentCarImagePath = ImageFolder + "/" + car.name + ".jpg"
                 val layoutID = "Car${car.id}Layout"
                 // Makes placeholder visible if car is found
                 val carLayout = view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(resources.getIdentifier(layoutID,
@@ -88,12 +89,17 @@ class TitleFragment : Fragment() {
                 val idRemoveButton: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", carCount+1), "id", activity?.packageName)
                 view.findViewById<ImageButton>(idCarImageButton)?.isVisible = true
 
-
-                val bitmap = BitmapFactory.decodeFile(imagePath + "/" + car.name + ".jpg")
                 val carButton = view.findViewById<ImageButton>(idCarImageButton)
+
+                if(File(CurrentCarImagePath).exists()) {
+                   var bitmap = BitmapFactory.decodeFile(CurrentCarImagePath)
+                    carButton.setImageBitmap(bitmap)
+                }
+
                 val xButton = view.findViewById<ImageButton>(idRemoveButton)
 
-                carButton.setImageBitmap(bitmap)
+
+
 
                 // When pressed on image X button of car object
                 xButton.setOnClickListener{
