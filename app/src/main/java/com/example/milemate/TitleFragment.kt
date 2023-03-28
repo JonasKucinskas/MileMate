@@ -2,7 +2,6 @@ package com.example.milemate
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.text.Layout
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +27,7 @@ import java.util.*
 class TitleFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
-    val maxCars = 4;
+    val maxCars = 4
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -48,12 +47,6 @@ class TitleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Makes all layouts disabled
-        //for (num in 0..4) {
-        //    val id = resources.getIdentifier(String.format("Car%dLayout", num+1),
-        //        "id", activity?.packageName)
-        //    view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(id).isVisible = false
-        //}
 
         val navGraphActivity = activity as MainActivity
 
@@ -65,33 +58,12 @@ class TitleFragment : Fragment() {
         carAddButton.setOnClickListener{
             navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
         }
+
         reminderChecker()
-
-        /*carAddButton.setOnClickListener {
-            val fragment = CarAddFragment()
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment_content_main, fragment)
-
-            transaction.addToBackStack(null)
-            transaction.commit()*/
-
-        //Temp method for sending notification 1 month and 14days before changing tires
-        val todayDate = Calendar.getInstance()
-        if ((todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
-            (todayDate.get(Calendar.MONTH) + 1 == 4 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
-            val notificationHelper = NotificationHelper(requireContext())
-            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from winter to summer until April 10th", 2)
-        }
-        //Temp method
-        if ((todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
-            (todayDate.get(Calendar.MONTH) + 1 == 11 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
-            val notificationHelper = NotificationHelper(requireContext())
-            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from summer to winter until November 10th", 3)
-        }
-
+        TyresReminder()
 
         val viewModel = ViewModelProvider(this).get(DBManager::class.java)
-        var carCount = 0;
+        var carCount = 0
         disableAllCarRemoveButtons()
 
         viewModel.getAllCars().observe(viewLifecycleOwner)
@@ -112,9 +84,9 @@ class TitleFragment : Fragment() {
                     "id", activity?.packageName))
                 carLayout.visibility = View.VISIBLE
 
-                var idCarImageButton = resources.getIdentifier(String.format("carImgPlaceHolder%d", carCount+1), "id", activity?.packageName)
+                val idCarImageButton = resources.getIdentifier(String.format("carImgPlaceHolder%d", carCount+1), "id", activity?.packageName)
                 val idRemoveButton: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", carCount+1), "id", activity?.packageName)
-                view?.findViewById<ImageButton>(idCarImageButton)?.isVisible = true;
+                view.findViewById<ImageButton>(idCarImageButton)?.isVisible = true
 
 
                 val bitmap = BitmapFactory.decodeFile(imagePath + "/" + car.name + ".jpg")
@@ -132,7 +104,7 @@ class TitleFragment : Fragment() {
                     navGraphActivity.navController.navigate(R.id.carFragment)
                 }
 
-                carCount++;
+                carCount++
             }
 
             if(carCount > 0){
@@ -147,6 +119,23 @@ class TitleFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // Rewrite this shit cleanly and add more countries dates depending on law
+    private fun TyresReminder(){
+        //Temp method for sending notification 1 month and 14days before changing tires
+        val todayDate = Calendar.getInstance()
+        if ((todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 3 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
+            (todayDate.get(Calendar.MONTH) + 1 == 4 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
+            val notificationHelper = NotificationHelper(requireContext())
+            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from winter to summer until April 10th", 2)
+        }
+        //Temp method
+        if ((todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 1) || (todayDate.get(Calendar.MONTH) + 1 == 10 && todayDate.get(Calendar.DAY_OF_MONTH) == 14) ||
+            (todayDate.get(Calendar.MONTH) + 1 == 11 && todayDate.get(Calendar.DAY_OF_MONTH) == 1)){
+            val notificationHelper = NotificationHelper(requireContext())
+            notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from summer to winter until November 10th", 3)
+        }
     }
 
     private fun reminderChecker(){//check if reminder file exists, if yes, check date, if date is today, send notification.
@@ -179,14 +168,14 @@ class TitleFragment : Fragment() {
     private fun disableAllCarPlaceholders(){
         for(i in 0..maxCars){
             val id: Int = resources.getIdentifier(String.format("carImgPlaceHolder%d", i+1), "id", activity?.packageName)
-            view?.findViewById<ImageButton>(id)?.isVisible = false;
+            view?.findViewById<ImageButton>(id)?.isVisible = false
         }
     }
 
     private fun disableAllCarRemoveButtons(){
         for(i in 0..maxCars){
             val id: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", i+1), "id", activity?.packageName)
-            view?.findViewById<ImageButton>(id)?.isVisible = false;
+            view?.findViewById<ImageButton>(id)?.isVisible = false
         }
     }
 
