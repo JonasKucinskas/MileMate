@@ -29,7 +29,7 @@ class NotificationHelper(private val context: Context){
         notificationManager.notify(id, builder.build())
     }
 
-    fun setNotification(notificationTitle: String, notificationText: String, notificationDate: android.icu.util.Calendar, notificationId: Int){
+    fun setNotification(notificationTitle: String, notificationText: String, notificationDate: Calendar, notificationId: Int){
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
         notificationIntent.putExtra("notification_date", notificationDate.timeInMillis)

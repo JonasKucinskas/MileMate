@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
@@ -47,22 +48,43 @@ class CarAddFragment : Fragment() {
 
         //Button click event to create car object
         addCarButton.setOnClickListener {
+            var errorCount = 0;
             val carNameContent = view.findViewById<EditText>(R.id.textCarName).text.toString()
             val carBrandContent = view.findViewById<EditText>(R.id.textCarBrand).text.toString()
             val carMileageContent = view.findViewById<EditText>(R.id.numberCarMileage).text.toString()
+            if (carMileageContent.toIntOrNull() == null){
+                Toast.makeText(activity, "Enter only number in the milemage", Toast.LENGTH_LONG).show()
+                errorCount++;
+            }
+            if (carNameContent == "" && errorCount == 0) {
+                Toast.makeText(activity, "Enter car name", Toast.LENGTH_LONG).show()
+                errorCount++;
+            }
+            if (carBrandContent == "" && errorCount == 0) {
+                Toast.makeText(activity, "Enter car brand/model", Toast.LENGTH_LONG).show()
+                errorCount++;
+            }
+            if (errorCount == 0 && carMileageContent.toInt() < 0) {
+                Toast.makeText(activity, "Enter a positive number", Toast.LENGTH_LONG).show()
+                errorCount++;
+            }
 
-            FirstCar = Car(carNameContent, carBrandContent, carMileageContent)
-            Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
 
-            //Sends notification
-            val notificationHelper = NotificationHelper(requireContext())
-            notificationHelper.sendNotification("MileMate", "Car Added successfully!", 0)
 
-            writeCarImage(carImage, carNameContent)
+            if (errorCount == 0) {
+                FirstCar = Car(carNameContent, carBrandContent, carMileageContent)
+                Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
 
-            // Insert into database
-            val database = ViewModelProvider(this).get(DBManager::class.java)
-            database.insertCar(FirstCar)
+                //Sends notification
+                val notificationHelper = NotificationHelper(requireContext())
+                notificationHelper.sendNotification("MileMate", "Car Added successfully!", 0)
+
+                writeCarImage(carImage, carNameContent)
+
+                // Insert into database
+                val database = ViewModelProvider(this).get(DBManager::class.java)
+                database.insertCar(FirstCar)
+            }
         }
 
     }
