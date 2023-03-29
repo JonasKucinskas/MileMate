@@ -8,13 +8,13 @@ import androidx.room.Query
 
 @Dao
 interface CarDao {
-    //@Query("SELECT * FROM car")
-    //fun getAllCars();
-
     @Insert
     fun insertCar(car: Car)
     @Query("SELECT count(*) FROM car")
     fun getCarsCount() : Int
+
+    @Query("SELECT * FROM car WHERE id = :id LIMIT 1")
+    fun getCar(id : Int) : Car
 
     @Delete
     fun deleteCar(car: Car)

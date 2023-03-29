@@ -9,11 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.example.milemate.database.CarFragment
 import com.example.milemate.database.DBManager
 import com.example.milemate.databinding.FragmentFirstBinding
 import com.google.gson.Gson
@@ -64,7 +65,6 @@ class TitleFragment : Fragment() {
         TyresReminder()
 
 
-
         val viewModel = ViewModelProvider(this).get(DBManager::class.java)
         val noCarsTextview = view.findViewById<TextView>(R.id.textview_first)
         var carCount = 0
@@ -113,7 +113,7 @@ class TitleFragment : Fragment() {
                 }
                 // When pressed on image button of car object
                 carButton.setOnClickListener{
-                    CarFragment.newInstance(car.id)
+                    setFragmentResult("CarData", bundleOf("carID" to car.id.toString()))
                     navGraphActivity.navController.navigate(R.id.carFragment)
                 }
 
