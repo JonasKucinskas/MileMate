@@ -113,7 +113,7 @@ class TitleFragment : Fragment() {
                 }
                 // When pressed on image button of car object
                 carButton.setOnClickListener{
-                    CarFragment.newInstance("xujne", "parametrai")
+                    CarFragment.newInstance(car.id)
                     navGraphActivity.navController.navigate(R.id.carFragment)
                 }
 
