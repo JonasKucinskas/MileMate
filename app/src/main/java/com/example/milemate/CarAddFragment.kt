@@ -21,7 +21,7 @@ import java.io.FileOutputStream
 
 class CarAddFragment : Fragment() {
 
-    private var FirstCar = Car("", "", "")
+    private var FirstCar = Car("", "", "", null, null)
     private var carImage: Bitmap? = null
 
     override fun onCreateView(
@@ -53,7 +53,7 @@ class CarAddFragment : Fragment() {
             val carBrandContent = view.findViewById<EditText>(R.id.textCarBrand).text.toString()
             val carMileageContent = view.findViewById<EditText>(R.id.numberCarMileage).text.toString()
             if (carMileageContent.toIntOrNull() == null){
-                Toast.makeText(activity, "Enter only number in the milemage", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Enter only number in the mileage", Toast.LENGTH_LONG).show()
                 errorCount++;
             }
             if (carNameContent == "" && errorCount == 0) {
@@ -72,7 +72,7 @@ class CarAddFragment : Fragment() {
 
 
             if (errorCount == 0) {
-                FirstCar = Car(carNameContent, carBrandContent, carMileageContent)
+                FirstCar = Car(carNameContent, carBrandContent, carMileageContent, null, null)//reminder is null because user cant set reminders in car add fragment
                 Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
 
                 //Sends notification

@@ -15,9 +15,6 @@ import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 import java.util.concurrent.TimeUnit
-import kotlin.math.ceil
-import kotlin.math.floor
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,7 +78,7 @@ class CheckUpFragment : Fragment() {
         datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
         //dynamic adjustment of numPickers. This ensures that negative date can't be set for reminder.
 
-        //NOTE: I always assume that all months have 31 days, so sometimes this is innacurate:
+        //NOTE: I always assume that all months have 31 days, so sometimes this is inaccurate:
 
         var dayDiff = 0
         var monthDiff = 0
