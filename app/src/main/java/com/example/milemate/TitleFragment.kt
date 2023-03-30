@@ -49,10 +49,7 @@ class TitleFragment : Fragment() {
 
         val navGraphActivity = activity as MainActivity
 
-        val checkUpButton = view.findViewById<Button>(R.id.check_UpBtn)
-        checkUpButton.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_FirstFragment_to_checkUpFragment)
-        }
+
         val carAddButton = binding.root.findViewById<Button>(R.id.add_CarBtn)
         carAddButton.setOnClickListener{
             navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
