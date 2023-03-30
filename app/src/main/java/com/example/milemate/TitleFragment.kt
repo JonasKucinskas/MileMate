@@ -2,7 +2,6 @@ package com.example.milemate
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.milemate.database.DBManager
 import com.example.milemate.databinding.FragmentFirstBinding
-import com.google.gson.Gson
-import com.google.gson.JsonParser
 import java.io.File
 import java.util.*
 
@@ -61,7 +58,7 @@ class TitleFragment : Fragment() {
             navGraphActivity.navController.navigate(R.id.action_FirstFragment_to_CarAddFragment)
         }
 
-        reminderChecker()
+        //reminderChecker()
         TyresReminder()
 
 
@@ -97,7 +94,7 @@ class TitleFragment : Fragment() {
                 val carButton = view.findViewById<ImageButton>(idCarImageButton)
 
                 if(File(CurrentCarImagePath).exists()) {
-                    var bitmap = BitmapFactory.decodeFile(CurrentCarImagePath)
+                    val bitmap = BitmapFactory.decodeFile(CurrentCarImagePath)
                     carButton.setImageBitmap(bitmap)
                 }
 
@@ -154,6 +151,7 @@ class TitleFragment : Fragment() {
         }
 
     }
+    /*
     private fun reminderChecker(){//check if reminder file exists, if yes, check date, if date is today, send notification.
         val file = File(context?.filesDir.toString() + "/reminder.json")
 
@@ -180,7 +178,7 @@ class TitleFragment : Fragment() {
             }
         }
     }
-
+    */
     private fun disableAllCarPlaceholders(){
         for(i in 0..maxCars){
             val id: Int = resources.getIdentifier(String.format("carImgPlaceHolder%d", i+1), "id", activity?.packageName)

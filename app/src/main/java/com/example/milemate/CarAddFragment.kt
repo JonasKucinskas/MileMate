@@ -1,6 +1,5 @@
 package com.example.milemate
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
@@ -39,7 +37,7 @@ class CarAddFragment : Fragment() {
         val addCarButton = view.findViewById<Button>(R.id.buttonAddCar)
         val imageUploadButton = view.findViewById<Button>(R.id.carAddSelectImage)
 
-        imageUploadButton.setOnClickListener(){
+        imageUploadButton.setOnClickListener{
             val intent = Intent()
             intent.type = "image/*"
             intent.action = "android.intent.action.PICK"
@@ -96,7 +94,7 @@ class CarAddFragment : Fragment() {
         }
     }
 
-    fun writeCarImage(carImage: Bitmap?, fileName: String){
+    private fun writeCarImage(carImage: Bitmap?, fileName: String){
 
         if (carImage != null) {
             val root: String = Environment.getExternalStoragePublicDirectory(

@@ -2,7 +2,6 @@ package com.example.milemate.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.milemate.Reminder
 
 @Entity
 data class Car (

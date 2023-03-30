@@ -155,10 +155,10 @@ class CheckUpFragment : Fragment() {
             reminderDate.set(datePicker.year, datePicker.month - numPickerMonth.value, datePicker.dayOfMonth - numPickerDay.value)
             checkUpDate.set(datePicker.year, datePicker.month, datePicker.dayOfMonth)
 
-            val reminder = Reminder(reminderDate, checkUpDate)
-            val reminderJson = Gson().toJson(reminder)
+            //val reminder = Reminder(reminderDate, checkUpDate)
+            //val reminderJson = Gson().toJson(reminder)
 
-            writeToJson(reminderJson)
+            //writeToJson(reminderJson)
 
             Toast.makeText(activity, "Reminder set for ${reminderDate.time}", Toast.LENGTH_SHORT).show()
         }
