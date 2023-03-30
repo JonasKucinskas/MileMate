@@ -97,9 +97,6 @@ class CarAddFragment : Fragment() {
     private fun writeCarImage(carImage: Bitmap?, fileName: String){
 
         if (carImage != null) {
-            val root: String = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES
-            ).toString()
             val myDir = File(context?.filesDir.toString()+"/saved_images")
             myDir.mkdirs()
             val fname = "$fileName.jpg"
