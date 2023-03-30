@@ -1,11 +1,14 @@
 package com.example.milemate.database
 
+import android.app.DatePickerDialog
 import android.graphics.BitmapFactory
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -13,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.R
 import com.example.milemate.databinding.FragmentFirstBinding
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -55,10 +59,13 @@ class CarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val checkupSetTextView = view.findViewById<TextView>(R.id.textViewExpiryCar)
+
+
         setFragmentResultListener("CarData") { _, bundle ->
 
             // Getting a selected car id from previous fragment
-            var result = bundle.getString("carID")
+            val result = bundle.getString("carID")
             val carID = result?.toInt()
 
             // Database init
@@ -72,21 +79,102 @@ class CarFragment : Fragment() {
                     view.findViewById<TextView>(R.id.editTextCarModel)?.text = car.brand
                     view.findViewById<TextView>(R.id.editTextNumberDecimal)?.text = car.mileage.toString()
 
+
+                    if (car.checkupReminder != null){
+                        checkupSetTextView.text = car.checkupReminder.toString()
+                    }
+
+
                     val imageFolder = getString(R.string.saved_images)
                     val currentCarImagePath = imageFolder + "/" + car.name + ".jpg"
 
                     if(File(currentCarImagePath).exists()) {
-                        var bitmap = BitmapFactory.decodeFile(currentCarImagePath)
+                        val bitmap = BitmapFactory.decodeFile(currentCarImagePath)
                         view.findViewById<ImageButton>(R.id.imageButtonCar).setImageBitmap(bitmap)
                     }
-
                 }
             }
-
-
-
         }
 
+        val numPickerMonth = view.findViewById<NumberPicker>(R.id.numberPickerMonth)
+        val numPickerDay = view.findViewById<NumberPicker>(R.id.numberPickerDay)
+
+        var dayDiff = 0
+        var monthDiff = 0
+
+        //NOTE: I always assume that all months have 31 days, so sometimes this is inaccurate:
+        checkupSetTextView.setOnClickListener{
+
+            val calendar = Calendar.getInstance()
+            //calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0)
+
+            val datePickerDialog = DatePickerDialog(requireContext())
+            datePickerDialog.datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
+            datePickerDialog.show()
+
+            //if date is changed in datepicker:
+            datePickerDialog.datePicker.setOnDateChangedListener { _, year, month, day ->
+
+                val calendar2 = Calendar.getInstance()
+                calendar2.set(year, month, day)
+
+                //calculate day difference
+                val msDiff = calendar2.timeInMillis - calendar.timeInMillis
+                dayDiff = TimeUnit.MILLISECONDS.toDays(msDiff).toInt()
+
+                //not very accurate, but it will work for now.
+                monthDiff = dayDiff / 31
+
+                //set numPickers to maximum date for reminder
+
+                numPickerMonth.minValue = 0
+                numPickerMonth.maxValue = monthDiff
+
+                numPickerDay.minValue = 0
+                numPickerDay.maxValue = dayDiff
+
+                checkupSetTextView.text = "set for $month th month and $day day"
+            }
+        }
+
+        numPickerMonth.setOnValueChangedListener { _, changedFromNum, changedToNum ->
+            if (changedFromNum - changedToNum == -1){//value increased by 1
+                numPickerDay.maxValue -= 31
+
+            }
+            else if (changedFromNum - changedToNum == 1){//value decreased by one
+                numPickerDay.maxValue += 31
+            }
+            else if (changedFromNum == 0 && changedToNum == monthDiff){//value changed from 0 to maxMonth value
+                numPickerDay.maxValue = dayDiff - changedToNum * 31
+            }
+            else if (changedFromNum == monthDiff && changedToNum == 0) {// changed from maxMonth to 0
+                numPickerDay.maxValue = dayDiff
+            }
+        }
+
+        numPickerDay.setOnValueChangedListener { _, changedFromNum, changedToNum ->
+            //if changedToNum is dividable by 31 (end of month) and number increased - subtract 1 from month max value
+            if(changedToNum % 31 == 0 && changedToNum != 0){
+                if (changedFromNum - changedToNum < 0){
+                    numPickerMonth.maxValue--
+                }
+            }
+            //if changedToNum is dividable by 31 (end of month) and number decreased - add 1 to month max value
+            else if(changedFromNum % 31 == 0 && changedFromNum != 0){
+                if (changedFromNum - changedToNum > 0){
+                    numPickerMonth.maxValue++
+                }
+            }
+            //if num changed from 0 to maxvalue, set month max to 0
+            else if (changedFromNum == 0 && changedToNum == dayDiff){
+                numPickerMonth.maxValue = 0
+            }
+            //if num changed from maxvalue to 0, set month max to dayDiff
+            else if (changedFromNum == dayDiff && changedToNum == 0){
+                numPickerMonth.maxValue = dayDiff / 31
+            }
+        }
     }
 
     companion object {

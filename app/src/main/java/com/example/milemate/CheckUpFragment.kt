@@ -164,17 +164,6 @@ class CheckUpFragment : Fragment() {
         }
     }
 
-    private fun writeToJson(json: String){
 
-        val file = File(context?.filesDir.toString() + "/reminder.json")
-
-        if (file.exists()){
-            file.delete()
-        }
-
-        val writer = BufferedWriter(FileWriter(context?.filesDir.toString() + "/reminder.json"))
-        writer.write(json)
-        writer.close()
-    }
 
 }
