@@ -1,6 +1,5 @@
 package com.example.milemate
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
@@ -21,7 +19,7 @@ import java.io.FileOutputStream
 
 class CarAddFragment : Fragment() {
 
-    private var FirstCar = Car("", "", "")
+    private var FirstCar = Car("", "", "", null, null)
     private var carImage: Bitmap? = null
 
     override fun onCreateView(
@@ -39,7 +37,7 @@ class CarAddFragment : Fragment() {
         val addCarButton = view.findViewById<Button>(R.id.buttonAddCar)
         val imageUploadButton = view.findViewById<Button>(R.id.carAddSelectImage)
 
-        imageUploadButton.setOnClickListener(){
+        imageUploadButton.setOnClickListener{
             val intent = Intent()
             intent.type = "image/*"
             intent.action = "android.intent.action.PICK"
@@ -53,7 +51,7 @@ class CarAddFragment : Fragment() {
             val carBrandContent = view.findViewById<EditText>(R.id.textCarBrand).text.toString()
             val carMileageContent = view.findViewById<EditText>(R.id.numberCarMileage).text.toString()
             if (carMileageContent.toIntOrNull() == null){
-                Toast.makeText(activity, "Enter only number in the milemage", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Enter only number in the mileage", Toast.LENGTH_LONG).show()
                 errorCount++;
             }
             if (carNameContent == "" && errorCount == 0) {
@@ -72,7 +70,7 @@ class CarAddFragment : Fragment() {
 
 
             if (errorCount == 0) {
-                FirstCar = Car(carNameContent, carBrandContent, carMileageContent)
+                FirstCar = Car(carNameContent, carBrandContent, carMileageContent, null, null)//reminder is null because user cant set reminders in car add fragment
                 Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
 
                 //Sends notification
@@ -96,7 +94,7 @@ class CarAddFragment : Fragment() {
         }
     }
 
-    fun writeCarImage(carImage: Bitmap?, fileName: String){
+    private fun writeCarImage(carImage: Bitmap?, fileName: String){
 
         if (carImage != null) {
             val root: String = Environment.getExternalStoragePublicDirectory(

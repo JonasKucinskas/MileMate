@@ -17,7 +17,7 @@ class DBManager(application: Application) : AndroidViewModel(application) {
 
     fun insertCar(car : com.example.milemate.Car){
         viewModelScope.launch(Dispatchers.IO) {
-            val carToInsert = Car(0, car.carName, car.carBrand, car.carMileage.toInt())
+            val carToInsert = Car(0, car.carName, car.carBrand, car.carMileage.toInt(), null, null)
             database.carDao().insertCar(carToInsert)
         }
     }

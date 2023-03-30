@@ -9,5 +9,7 @@ data class Car (
     val id: Int,
     val name: String,
     val brand: String,
-    val mileage: Int
+    val mileage: Int,
+    var checkupReminder: String?,
+    var checkupDate: String?
 )
