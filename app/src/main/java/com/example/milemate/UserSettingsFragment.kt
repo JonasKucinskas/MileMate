@@ -1,5 +1,6 @@
 package com.example.milemate
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,7 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CalendarView
 import android.widget.Spinner
+import android.widget.Switch
+import org.json.JSONObject
+import java.io.File
+import java.io.FileWriter
+import java.io.OutputStreamWriter
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,7 +32,8 @@ class UserSettingsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    var selectedSpinnerItem: String? = null //Regionas
+    var selectedLicenseDate: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -69,6 +79,54 @@ class UserSettingsFragment : Fragment() {
             }
         }
 
+
+        val residenceSwitch = view.findViewById<Switch>(R.id.switchResidenceUsrSet)
+        val licenseSwitch = view.findViewById<Switch>(R.id.switchLicenseUsrSet)
+
+        residenceSwitch.setOnCheckedChangeListener { _, _ ->
+            if (residenceSwitch.isChecked) {
+                val spinner = view.findViewById<Spinner>(R.id.spinnerRegionUsrSet)
+                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        selectedSpinnerItem = parent?.getItemAtPosition(position).toString()
+                    }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        //Nieko nevyksta
+                    }
+                }
+            } else {
+                // Nieko nevyksta
+            }
+        }
+
+        licenseSwitch.setOnCheckedChangeListener { _, _ ->
+            if (licenseSwitch.isChecked) {
+                val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
+                calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+                    val calendar = Calendar.getInstance()
+                    calendar.set(year, month, dayOfMonth)
+                    val date = calendar.time
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    selectedLicenseDate = dateFormat.format(date)
+                }
+            } else {
+                // Nieko nevyksta
+            }
+        }
+
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+            val jsonObject = JSONObject()
+            jsonObject.put("userRegion", selectedSpinnerItem)
+            jsonObject.put("licenseDate", selectedLicenseDate)
+            val file = File(requireActivity().filesDir, "usersettings.json")
+            val fileWriter = FileWriter(file)
+            fileWriter.write(jsonObject.toString())
+            fileWriter.close()
 
     }
 
