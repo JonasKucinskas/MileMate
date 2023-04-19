@@ -46,10 +46,12 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
 
         return when (item.itemId) {
+            /*
             R.id.action_app_settings -> {
                 navController.navigate(R.id.action_AnyFragment_to_AppSettings)
                 return true
             }
+             */
 
             R.id.action_user_settings -> {
                 navController.navigate(R.id.action_AnyFragment_to_UserSettings)
