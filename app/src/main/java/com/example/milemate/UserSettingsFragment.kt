@@ -13,10 +13,12 @@ import android.widget.Spinner
 import android.widget.Switch
 import org.json.JSONObject
 import java.io.File
+import java.io.FileReader
 import java.io.FileWriter
 import java.io.OutputStreamWriter
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,8 +34,13 @@ class UserSettingsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+
     var selectedSpinnerItem: String? = null //Regionas
-    var selectedLicenseDate: String? = null
+    var selectedLicenseDate: String = "2000-1-1"
+    var regionSwitchBool: Boolean = false
+    var licenseSwitchBool: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,87 +53,147 @@ class UserSettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_settings, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val regions = resources.getStringArray(R.array.array_regions)
+        val file = File(requireActivity().filesDir,"usersettings.json")
+        if(file.canRead()) {
+            val fileReader = FileReader(file)
+            val jsonString = fileReader.readText()
+            val jsonObject = JSONObject(jsonString)
 
+            regionSwitchBool = jsonObject.getBoolean("regionSwitch")
+            licenseSwitchBool = jsonObject.getBoolean("licenseSwitch")
 
-        val spinner = view.findViewById<Spinner>(R.id.spinnerRegionUsrSet)
-        if (spinner != null) {
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, regions)
+            if(jsonObject.has("licenseDate"))
+            selectedLicenseDate = jsonObject.getString("licenseDate")
 
+            if(jsonObject.has("userRegion"))
+            selectedSpinnerItem = jsonObject.getString("userRegion")
 
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-            spinner.adapter = adapter
-
-            spinner.onItemSelectedListener = object :
-                AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>,
-                                            view: View, position: Int, id: Long) {
-
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                }
-            }
         }
 
 
-        val residenceSwitch = view.findViewById<Switch>(R.id.switchResidenceUsrSet)
+        RegionSelectFun(view)
+        LicenceExpiryFun(view)
+
+    }
+
+    private fun RegionSelectFun(view: View)
+    {
+        val regions = resources.getStringArray(R.array.array_regions)
+        val regionSwitch = view.findViewById<Switch>(R.id.switchResidenceUsrSet)
+
+        regionSwitch.isChecked = regionSwitchBool
+
+            //if (regionSwitch.isChecked) {
+
+                val spinner = view.findViewById<Spinner>(R.id.spinnerRegionUsrSet)
+
+                if (spinner != null) {
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, regions)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinner.adapter = adapter
+
+
+                    for ((index, value) in regions.withIndex()) {
+                        if (value == selectedSpinnerItem) {
+                            spinner.setSelection(index)
+                            break
+                        }
+                    }
+
+                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>,
+                                                    view: View, position: Int, id: Long) {
+
+                            selectedSpinnerItem = parent?.getItemAtPosition(position).toString()
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+
+                        }
+
+                    }
+                }
+        //}
+
+        regionSwitch.setOnCheckedChangeListener { _, _ ->
+            regionSwitchBool = regionSwitch.isChecked
+        }
+
+    }
+
+    private fun LicenceExpiryFun(view: View)
+    {
+
         val licenseSwitch = view.findViewById<Switch>(R.id.switchLicenseUsrSet)
 
-        residenceSwitch.setOnCheckedChangeListener { _, _ ->
-            if (residenceSwitch.isChecked) {
-                val spinner = view.findViewById<Spinner>(R.id.spinnerRegionUsrSet)
-                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        selectedSpinnerItem = parent?.getItemAtPosition(position).toString()
-                    }
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        //Nieko nevyksta
-                    }
-                }
-            } else {
-                // Nieko nevyksta
-            }
-        }
+        val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
+        val calendar = Calendar.getInstance()
 
-        licenseSwitch.setOnCheckedChangeListener { _, _ ->
+        var dateSplit = selectedLicenseDate.split("-")
+        var year = dateSplit.get(0).toInt()
+        var month = dateSplit.get(1).toInt() - 1
+        var day = dateSplit.get(2).toInt()
+
+        calendar.set(year, month, day)
+        calendarView.setDate(calendar.timeInMillis)
+        licenseSwitch.isChecked = licenseSwitchBool
+
             if (licenseSwitch.isChecked) {
-                val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
+
                 calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-                    val calendar = Calendar.getInstance()
+
                     calendar.set(year, month, dayOfMonth)
+                    calendarView.setDate(calendar.timeInMillis)
+
                     val date = calendar.time
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     selectedLicenseDate = dateFormat.format(date)
                 }
-            } else {
-                // Nieko nevyksta
             }
+
+        licenseSwitch.setOnCheckedChangeListener { _, _ ->
+            licenseSwitchBool = licenseSwitch.isChecked
         }
 
+        val CurrentDate = Calendar.getInstance()
+        val NeededDate = Calendar.getInstance()
+        NeededDate.set(year, month, day)
+
+        val difference = NeededDate.timeInMillis - CurrentDate.timeInMillis
+        val daysDifference = TimeUnit.MILLISECONDS.toDays(difference)
+
+        if (daysDifference < 7 ){
+            val notificationHelper = NotificationHelper(requireContext())
+            notificationHelper.sendNotification("MileMate", "Hey! Don’t forget to renew your drivers license! It expires in a week!", 4)
+        }
 
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
-            val jsonObject = JSONObject()
-            jsonObject.put("userRegion", selectedSpinnerItem)
-            jsonObject.put("licenseDate", selectedLicenseDate)
-            val file = File(requireActivity().filesDir, "usersettings.json")
-            val fileWriter = FileWriter(file)
-            fileWriter.write(jsonObject.toString())
-            fileWriter.close()
+        val jsonObject = JSONObject()
+        jsonObject.put("userRegion", selectedSpinnerItem)
+        jsonObject.put("licenseDate", selectedLicenseDate)
+        jsonObject.put("licenseSwitch", licenseSwitchBool)
+        jsonObject.put("regionSwitch", regionSwitchBool)
+
+        val file = File(requireActivity().filesDir,"usersettings.json")
+
+        if(!file.exists())
+        file.createNewFile()
+
+        val fileWriter = FileWriter(file, false)
+        fileWriter.write(jsonObject.toString())
+        fileWriter.close()
 
     }
 

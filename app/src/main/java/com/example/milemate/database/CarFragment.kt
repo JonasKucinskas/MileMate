@@ -118,6 +118,7 @@ class CarFragment : Fragment() {
                 val calendar2 = Calendar.getInstance()
                 calendar2.set(year, month, day)
 
+
                 //calculate day difference
                 val msDiff = calendar2.timeInMillis - calendar.timeInMillis
                 dayDiff = TimeUnit.MILLISECONDS.toDays(msDiff).toInt()

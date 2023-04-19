@@ -1,5 +1,6 @@
 package com.example.milemate.database
 
+
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -7,9 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.lifecycle.LifecycleOwner
 
 class DBManager(application: Application) : AndroidViewModel(application) {
     private var database : CarDatabase
+
 
     init{
         database = CarDatabase.getDatabase(application)
@@ -17,10 +20,13 @@ class DBManager(application: Application) : AndroidViewModel(application) {
 
     fun insertCar(car : com.example.milemate.Car){
         viewModelScope.launch(Dispatchers.IO) {
+
+
             val carToInsert = Car(0, car.carName, car.carBrand, car.carMileage.toInt(), null, null)
             database.carDao().insertCar(carToInsert)
         }
     }
+
 
     fun deleteCar(car : Car){
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,6 +55,8 @@ class DBManager(application: Application) : AndroidViewModel(application) {
     fun getAllCars(): LiveData<List<Car>> {
         return database.carDao().getAllCars()
     }
+
+
 
     /*val allItems: LiveData<List<Car : car>>
     fun getAllItems(): LiveData<List<>> {
