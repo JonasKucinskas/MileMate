@@ -119,6 +119,8 @@ class TitleFragment : Fragment() {
             }else{
                 disableAllCarPlaceholders()
             }
+
+
         }
     }
 
@@ -199,3 +201,6 @@ class TitleFragment : Fragment() {
 
 
 }
+
+
+

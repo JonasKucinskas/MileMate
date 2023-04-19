@@ -2,9 +2,10 @@ package com.example.milemate.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDate
 
 @Entity
-data class Car (
+data class Car(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,

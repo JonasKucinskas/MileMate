@@ -10,6 +10,10 @@ import androidx.room.Query
 interface CarDao {
     @Insert
     fun insertCar(car: Car)
+
+    @Insert
+    fun updateLicenceDate(car: Car)
+
     @Query("SELECT count(*) FROM car")
     fun getCarsCount() : Int
 

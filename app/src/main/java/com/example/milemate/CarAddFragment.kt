@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
 import java.io.File
 import java.io.FileOutputStream
+import java.time.LocalDate
 
 class CarAddFragment : Fragment() {
 
