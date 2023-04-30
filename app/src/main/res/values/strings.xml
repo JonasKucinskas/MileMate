@@ -10,7 +10,7 @@
     <string name="no_cars">There are no linked cars to this application. :(</string>
 
     <string name="placeholder">Placeholder</string>
-    <string name="check_up_expiry_date">Check Up Expiry Date</string>
+    <string name="check_up_expiry_date">Check-up expiry date</string>
 
     <!-- Strings for CarAddFragment -->
     <string name="add_newCar_label">Add a new car</string>
@@ -49,6 +49,8 @@
     <string name="car_2">Car 2</string>
     <string name="remove_car">Remove car</string>
     <string name="saved_images">/data/user/0/com.example.milemate/files/saved_images</string>
+    <string name="edit_car_information">Edit car information</string>
+    <string name="settings">Settings</string>
 
     <!-- Strings for user settings -->
     <string-array name="array_regions">

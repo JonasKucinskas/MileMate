@@ -134,7 +134,7 @@ class CarFragment : Fragment() {
                 numPickerDay.minValue = 0
                 numPickerDay.maxValue = dayDiff
 
-                checkupSetTextView.text = "set for $month th month and $day day"
+                checkupSetTextView.text = "Expiry date set at: $month/$day"
             }
         }
 

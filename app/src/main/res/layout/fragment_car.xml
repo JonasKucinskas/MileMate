@@ -9,7 +9,7 @@
 
     <ImageButton
         android:id="@+id/imageButtonCar"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="156dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.097"
         tools:src="@tools:sample/backgrounds/scenic" />
+
 
     <EditText
         android:id="@+id/editTextCarName"
@@ -31,8 +32,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonCar"
-        app:layout_constraintVertical_bias="0.023" />
-
+        app:layout_constraintVertical_bias="0.043" />
 
     <EditText
         android:id="@+id/editTextCarModel"
@@ -46,7 +46,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCarName"
-        app:layout_constraintVertical_bias="0.025" />
+        app:layout_constraintVertical_bias="0.068" />
 
     <EditText
         android:id="@+id/editTextNumberDecimal"
@@ -55,12 +55,13 @@
         android:ems="10"
         android:hint="@string/car_mileage"
         android:inputType="numberDecimal"
+        android:singleLine="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCarModel"
-        app:layout_constraintVertical_bias="0.027" />
+        app:layout_constraintVertical_bias="0.094" />
 
     <TextView
         android:id="@+id/textViewExpiryCar"
@@ -73,7 +74,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintVertical_bias="0.058" />
 
     <TextView
         android:id="@+id/textViewRemindBefore"
@@ -86,50 +87,101 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewExpiryCar"
-        app:layout_constraintVertical_bias="0.09" />
+        app:layout_constraintVertical_bias="0.058" />
+
+    <NumberPicker
+        android:id="@+id/numberPickerDay"
+        android:layout_width="65dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.621"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRemindBefore"
+        app:layout_constraintVertical_bias="0.0">
+
+    </NumberPicker>
 
     <TextView
         android:id="@+id/textViewMonthsCar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:text="Months:"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/numberPickerMonth"
-        app:layout_constraintEnd_toStartOf="@+id/numberPickerDay"
-        app:layout_constraintStart_toStartOf="@+id/numberPickerMonth" />
+        app:layout_constraintEnd_toEndOf="@+id/numberPickerMonth"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/numberPickerMonth"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRemindBefore"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textViewDaysCar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:text="Days:"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/numberPickerDay"
         app:layout_constraintEnd_toEndOf="@+id/numberPickerDay"
-        app:layout_constraintStart_toEndOf="@+id/textViewMonthsCar"
-        app:layout_constraintTop_toTopOf="@+id/textViewMonthsCar" />
-
-    <NumberPicker
-        android:id="@+id/numberPickerDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPickerMonth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/numberPickerMonth"
-        app:layout_constraintTop_toTopOf="@+id/numberPickerMonth">
-
-    </NumberPicker>
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="@+id/numberPickerDay"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRemindBefore"
+        app:layout_constraintVertical_bias="1.0" />
 
     <NumberPicker
         android:id="@+id/numberPickerMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="63dp"
+        android:layout_height="142dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/numberPickerDay"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.914"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRemindBefore"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/car_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="@string/car_name"
+        app:layout_constraintBottom_toTopOf="@+id/editTextCarName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonCar"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/car_mileage_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/car_mileage"
+        app:layout_constraintBottom_toTopOf="@+id/editTextNumberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.005"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCarModel" />
+
+    <TextView
+        android:id="@+id/car_brand_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/car_brand_model"
+        app:layout_constraintBottom_toTopOf="@+id/editTextCarModel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCarName"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
