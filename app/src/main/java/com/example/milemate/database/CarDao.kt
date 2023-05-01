@@ -1,10 +1,7 @@
 package com.example.milemate.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface CarDao {
@@ -13,6 +10,9 @@ interface CarDao {
 
     @Insert
     fun updateLicenceDate(car: Car)
+
+    @Update
+    fun updateCar(car: Car)
 
     @Query("SELECT count(*) FROM car")
     fun getCarsCount() : Int

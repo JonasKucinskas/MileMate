@@ -56,6 +56,35 @@ class DBManager(application: Application) : AndroidViewModel(application) {
         return database.carDao().getAllCars()
     }
 
+    fun updateCar(car: Car){
+        viewModelScope.launch(Dispatchers.IO){
+            database.carDao().updateCar(car)
+        }
+    }
+
+    fun updateMileage(carId: Int, newMileage: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            var carToUpdate = database.carDao().getCar(carId)
+            carToUpdate.mileage = newMileage
+            database.carDao().updateCar(carToUpdate)
+        }
+    }
+
+    fun updateBrand(carId: Int, newBrand: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            var carToUpdate = database.carDao().getCar(carId)
+            carToUpdate.brand = newBrand
+            database.carDao().updateCar(carToUpdate)
+        }
+    }
+
+    fun updateName(carId: Int, newName: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            var carToUpdate = database.carDao().getCar(carId)
+            carToUpdate.name = newName
+            database.carDao().updateCar(carToUpdate)
+        }
+    }
 
 
     /*val allItems: LiveData<List<Car : car>>
