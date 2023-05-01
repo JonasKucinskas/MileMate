@@ -8,9 +8,9 @@ import java.time.LocalDate
 data class Car(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String,
-    val brand: String,
-    val mileage: Int,
+    var name: String,
+    var brand: String,
+    var mileage: Int,
     var checkupReminder: String?,
     var checkupDate: String?
 )
