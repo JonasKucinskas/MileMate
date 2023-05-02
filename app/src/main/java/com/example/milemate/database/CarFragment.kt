@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.NumberPicker
 import android.widget.TextView
@@ -33,6 +34,7 @@ class CarFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var carID: Int? = null
 
     private lateinit var binding : FragmentFirstBinding
 
@@ -60,20 +62,20 @@ class CarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val checkupSetTextView = view.findViewById<TextView>(R.id.textViewExpiryCar)
+        val database = ViewModelProvider(this)[DBManager::class.java]
 
 
         setFragmentResultListener("CarData") { _, bundle ->
 
             // Getting a selected car id from previous fragment
             val result = bundle.getString("carID")
-            val carID = result?.toInt()
+            carID = result?.toInt()
 
             // Database init
-            val database = ViewModelProvider(this)[DBManager::class.java]
 
             if (carID != null) {
                 // Getting car from database by its ID
-                database.getCar(carID).observe(viewLifecycleOwner)
+                database.getCar(carID!!).observe(viewLifecycleOwner)
                 { car ->
                     view.findViewById<TextView>(R.id.editTextCarName)?.text = car.name
                     view.findViewById<TextView>(R.id.editTextCarModel)?.text = car.brand
@@ -141,7 +143,6 @@ class CarFragment : Fragment() {
         numPickerMonth.setOnValueChangedListener { _, changedFromNum, changedToNum ->
             if (changedFromNum - changedToNum == -1){//value increased by 1
                 numPickerDay.maxValue -= 31
-
             }
             else if (changedFromNum - changedToNum == 1){//value decreased by one
                 numPickerDay.maxValue += 31
@@ -176,6 +177,21 @@ class CarFragment : Fragment() {
                 numPickerMonth.maxValue = dayDiff / 31
             }
         }
+
+        val saveButton = view.findViewById<Button>(R.id.SaveButton)
+
+        saveButton.setOnClickListener(){
+
+            val name = view.findViewById<TextView>(R.id.editTextCarName)?.text
+            val brand = view.findViewById<TextView>(R.id.editTextCarModel)?.text
+            val mileage = view.findViewById<TextView>(R.id.editTextNumberDecimal)?.text
+
+            database.updateName(carID!!, name.toString())
+            database.updateBrand(carID!!, brand.toString())
+            database.updateMileage(carID!!, mileage.toString().toInt())
+        }
+
+
     }
 
     companion object {
