@@ -71,10 +71,10 @@ class UserSettingsFragment : Fragment() {
             licenseSwitchBool = jsonObject.getBoolean("licenseSwitch")
 
             if(jsonObject.has("licenseDate"))
-            selectedLicenseDate = jsonObject.getString("licenseDate")
+                selectedLicenseDate = jsonObject.getString("licenseDate")
 
             if(jsonObject.has("userRegion"))
-            selectedSpinnerItem = jsonObject.getString("userRegion")
+                selectedSpinnerItem = jsonObject.getString("userRegion")
 
         }
 
@@ -144,20 +144,21 @@ class UserSettingsFragment : Fragment() {
 
         calendar.set(year, month, day)
         calendarView.setDate(calendar.timeInMillis)
+
         licenseSwitch.isChecked = licenseSwitchBool
 
-            if (licenseSwitch.isChecked) {
+        if (licenseSwitch.isChecked) {
 
-                calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
 
-                    calendar.set(year, month, dayOfMonth)
-                    calendarView.setDate(calendar.timeInMillis)
+                calendar.set(year, month, dayOfMonth)
+                calendarView.setDate(calendar.timeInMillis)
 
-                    val date = calendar.time
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    selectedLicenseDate = dateFormat.format(date)
-                }
+                val date = calendar.time
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                selectedLicenseDate = dateFormat.format(date)
             }
+        }
 
         licenseSwitch.setOnCheckedChangeListener { _, _ ->
             licenseSwitchBool = licenseSwitch.isChecked
@@ -189,7 +190,7 @@ class UserSettingsFragment : Fragment() {
         val file = File(requireActivity().filesDir,"usersettings.json")
 
         if(!file.exists())
-        file.createNewFile()
+           file.createNewFile()
 
         val fileWriter = FileWriter(file, false)
         fileWriter.write(jsonObject.toString())
