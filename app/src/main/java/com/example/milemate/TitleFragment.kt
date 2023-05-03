@@ -1,22 +1,20 @@
 package com.example.milemate
 
-import android.graphics.BitmapFactory
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
+import android.widget.ListView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.example.milemate.database.DBManager
 import com.example.milemate.databinding.FragmentFirstBinding
-import java.io.File
 import java.util.*
 
 
@@ -58,68 +56,23 @@ class TitleFragment : Fragment() {
         //reminderChecker()
         TyresReminder()
 
-
         val viewModel = ViewModelProvider(this).get(DBManager::class.java)
         val noCarsTextview = view.findViewById<TextView>(R.id.textview_first)
-        var carCount = 0
 
         viewModel.getAllCars().observe(viewLifecycleOwner)
         { cars ->
-            // TODO: Add car images (hopefully linked to cars) to each of 4 car elements
             // Cia accessint whatever car data
-            for (car in cars) {
 
-                if(carCount > maxCars-1){
-                    break
-                }
-
-                // Loads image onto carPlaceHolders
-
-                val ImageFolder = getString(R.string.saved_images)
-                val CurrentCarImagePath = ImageFolder + "/" + car.name + ".jpg"
-                val layoutID = "Car${carCount+1}Layout"
-                // Makes placeholder visible if car is found
-                val carLayout = view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(resources.getIdentifier(layoutID,
-                    "id", activity?.packageName))
-                carLayout.visibility = View.VISIBLE
-
-                val idCarImageButton = resources.getIdentifier(String.format("carImgPlaceHolder%d", carCount+1), "id", activity?.packageName)
-                val idRemoveButton: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", carCount+1), "id", activity?.packageName)
-                view.findViewById<ImageButton>(idCarImageButton)?.isVisible = true
-                view.findViewById<ImageButton>(idRemoveButton)?.isVisible = true
-
-                val carButton = view.findViewById<ImageButton>(idCarImageButton)
-
-                if(File(CurrentCarImagePath).exists()) {
-                    val bitmap = BitmapFactory.decodeFile(CurrentCarImagePath)
-                    carButton.setImageBitmap(bitmap)
-                }
-
-                val xButton = view.findViewById<ImageButton>(idRemoveButton)
-
-
-                // When pressed on image X button of car object
-                xButton.setOnClickListener{
-                    viewModel.deleteCar(car)
-                    deleteCarImage(car.name)
-                    // Refresh fragment to update elements
-                    navGraphActivity.navController.navigate(R.id.action_FirstFragment_self)
-                }
-                // When pressed on image button of car object
-                carButton.setOnClickListener{
-                    setFragmentResult("CarData", bundleOf("carID" to car.id.toString()))
-                    navGraphActivity.navController.navigate(R.id.carFragment)
-                }
-
-                carCount++
+            val listView: ListView = view.findViewById(R.id.carlist)
+            listView.adapter = ListViewAdapter(context as Activity, cars)
+            listView.setOnItemClickListener{parent, view, position, id ->
+                setFragmentResult("CarData", bundleOf("carID" to cars[position].id.toString()))
+                navGraphActivity.navController.navigate(R.id.carFragment)
             }
 
-            if(carCount > 0){
+            if(cars.isNotEmpty()){
                 noCarsTextview.isVisible = false
-            }else{
-                disableAllCarPlaceholders()
             }
-
 
         }
     }
@@ -178,26 +131,6 @@ class TitleFragment : Fragment() {
         }
     }
     */
-    private fun disableAllCarPlaceholders(){
-        for(i in 0..maxCars){
-            val id: Int = resources.getIdentifier(String.format("carImgPlaceHolder%d", i+1), "id", activity?.packageName)
-            view?.findViewById<ImageButton>(id)?.isVisible = false
-        }
-    }
-
-    private fun disableAllCarRemoveButtons(){
-        for(i in 0..maxCars){
-            val id: Int = resources.getIdentifier(String.format("carRemoveImgBtn%d", i+1), "id", activity?.packageName)
-            view?.findViewById<ImageButton>(id)?.isVisible = false
-        }
-    }
-
-    private fun deleteCarImage(name : String){
-        val file = File(context?.filesDir.toString()+"/saved_images/"+name+".jpg")
-        if (file.exists()) {
-            file.delete()
-        }
-    }
 
 
 }
