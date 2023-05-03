@@ -14,9 +14,16 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Database
+import com.example.milemate.NotificationHelper
 import com.example.milemate.R
 import com.example.milemate.databinding.FragmentFirstBinding
+import org.json.JSONObject
 import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -34,7 +41,15 @@ class CarFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+
     private var carID: Int? = null
+    private var selectedDatePicker: String = "2000-1-1"
+    private var selectedNumPickerMonth = 0
+    private var selectedNumPickerDay = 0
+    private var selectedNumPickerMonthMax = 0
+    private var selectedNumPickerDayMax = 0
+
 
     private lateinit var binding : FragmentFirstBinding
 
@@ -61,8 +76,25 @@ class CarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ReadEverything()
+
+        val selectedCalendar = java.util.Calendar.getInstance()
+        var dateSplit = selectedDatePicker.split("-")
+        var selectedDateYear = dateSplit.get(0).toInt()
+        var selectedDateMonth = dateSplit.get(1).toInt() - 1
+        var selMonth = selectedDateMonth + 1
+        var selectedDateDay = dateSplit.get(2).toInt()
+
+
+
+
         val checkupSetTextView = view.findViewById<TextView>(R.id.textViewExpiryCar)
         val database = ViewModelProvider(this)[DBManager::class.java]
+
+
+
+        selectedCalendar.set(selectedDateYear, selectedDateMonth, selectedDateDay)
+        checkupSetTextView.text = "Expiry date set at: $selMonth/$selectedDateDay"
 
 
         setFragmentResultListener("CarData") { _, bundle ->
@@ -101,6 +133,13 @@ class CarFragment : Fragment() {
         val numPickerMonth = view.findViewById<NumberPicker>(R.id.numberPickerMonth)
         val numPickerDay = view.findViewById<NumberPicker>(R.id.numberPickerDay)
 
+
+
+        numPickerMonth.maxValue = selectedNumPickerMonthMax
+        numPickerDay.maxValue = selectedNumPickerDayMax
+        numPickerMonth.value = selectedNumPickerMonth
+        numPickerDay.value = selectedNumPickerDay
+
         var dayDiff = 0
         var monthDiff = 0
 
@@ -113,6 +152,7 @@ class CarFragment : Fragment() {
             val datePickerDialog = DatePickerDialog(requireContext())
             datePickerDialog.datePicker.minDate = calendar.timeInMillis+24*60*60*1000//set min available date to tomorrow in datePicker
             datePickerDialog.show()
+
 
             //if date is changed in datepicker:
             datePickerDialog.datePicker.setOnDateChangedListener { _, year, month, day ->
@@ -136,7 +176,19 @@ class CarFragment : Fragment() {
                 numPickerDay.minValue = 0
                 numPickerDay.maxValue = dayDiff
 
-                checkupSetTextView.text = "Expiry date set at: $month/$day"
+                var realmonth = month+1
+                checkupSetTextView.text = "Expiry date set at: $realmonth/$day"
+
+
+                val date = calendar2.time
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                selectedDatePicker = dateFormat.format(date)
+
+                selectedNumPickerDay = numPickerDay.value
+                selectedNumPickerDayMax = numPickerDay.maxValue
+                selectedNumPickerMonth = numPickerMonth.value
+                selectedNumPickerMonthMax = numPickerMonth.maxValue
+
             }
         }
 
@@ -153,6 +205,12 @@ class CarFragment : Fragment() {
             else if (changedFromNum == monthDiff && changedToNum == 0) {// changed from maxMonth to 0
                 numPickerDay.maxValue = dayDiff
             }
+
+
+            selectedNumPickerDay = numPickerDay.value
+            selectedNumPickerDayMax = numPickerDay.maxValue
+            selectedNumPickerMonth = numPickerMonth.value
+            selectedNumPickerMonthMax = numPickerMonth.maxValue
         }
 
         numPickerDay.setOnValueChangedListener { _, changedFromNum, changedToNum ->
@@ -176,9 +234,73 @@ class CarFragment : Fragment() {
             else if (changedFromNum == dayDiff && changedToNum == 0){
                 numPickerMonth.maxValue = dayDiff / 31
             }
+
+            selectedNumPickerDay = numPickerDay.value
+            selectedNumPickerDayMax = numPickerDay.maxValue
+            selectedNumPickerMonth = numPickerMonth.value
+            selectedNumPickerMonthMax = numPickerMonth.maxValue
         }
 
+        val CurrentDate = java.util.Calendar.getInstance()
+        val ExpiryDate = java.util.Calendar.getInstance()
+        val NeededDate = java.util.Calendar.getInstance()
+        ExpiryDate.set(selectedDateYear, selectedDateMonth, selectedDateDay)
+        NeededDate.set(0, numPickerMonth.value, numPickerDay.value)
+
+        val difference = ExpiryDate.timeInMillis - CurrentDate.timeInMillis
+        val daysDifference = TimeUnit.MILLISECONDS.toDays(difference)
+
+        val NeededDateInMilis = NeededDate.timeInMillis
+
+        if (daysDifference <= TimeUnit.MILLISECONDS.toDays(NeededDateInMilis) ){
+            val notificationHelper = NotificationHelper(requireContext())
+            notificationHelper.sendNotification("MileMate", "Hey! Don’t forget to check up your car!", 5)
+        }
+
+
+        SaveEverything(view)
+    }
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+
+
+    }
+
+    private fun ReadEverything()
+    {
+        val file = File(requireActivity().filesDir,"carfragment.json")
+        if(file.canRead()) {
+            val fileReader = FileReader(file)
+            val jsonString = fileReader.readText()
+            val jsonObject = JSONObject(jsonString)
+
+            if(jsonObject.has("datePicker"))
+                selectedDatePicker = jsonObject.getString("datePicker")
+
+            if(jsonObject.has("numPickerMonth"))
+                selectedNumPickerMonth = jsonObject.getInt("numPickerMonth")
+
+            if(jsonObject.has("numPickerDay"))
+                selectedNumPickerDay = jsonObject.getInt("numPickerDay")
+
+            if(jsonObject.has("numPickerDayMax"))
+                selectedNumPickerDayMax = jsonObject.getInt("numPickerDayMax")
+
+            if(jsonObject.has("numPickerMonthMax"))
+                selectedNumPickerMonthMax = jsonObject.getInt("numPickerMonthMax")
+
+        }
+    }
+
+    private fun SaveEverything(view: View)
+    {
+        val database = ViewModelProvider(this)[DBManager::class.java]
         val saveButton = view.findViewById<Button>(R.id.SaveButton)
+
 
         saveButton.setOnClickListener(){
 
@@ -189,9 +311,27 @@ class CarFragment : Fragment() {
             database.updateName(carID!!, name.toString())
             database.updateBrand(carID!!, brand.toString())
             database.updateMileage(carID!!, mileage.toString().toInt())
+
+
+
+            val jsonObject = JSONObject()
+            jsonObject.put("datePicker", selectedDatePicker)
+            jsonObject.put("numPickerMonth", selectedNumPickerMonth)
+            jsonObject.put("numPickerDay", selectedNumPickerDay)
+            jsonObject.put("numPickerMonthMax", selectedNumPickerMonthMax)
+            jsonObject.put("numPickerDayMax", selectedNumPickerDayMax)
+
+            val file = File(requireActivity().filesDir,"carfragment.json")
+
+            if(!file.exists())
+                file.createNewFile()
+
+            val fileWriter = FileWriter(file, false)
+            fileWriter.write(jsonObject.toString())
+            fileWriter.close()
+
+
         }
-
-
     }
 
     companion object {
