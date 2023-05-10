@@ -1,10 +1,20 @@
 package com.example.milemate
 
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.example.milemate.database.User
+import com.example.milemate.database.UserDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,6 +49,43 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val registerButton = view.findViewById<Button>(R.id.actualregisterbutton)
+        registerButton.setOnClickListener{
+            val enteredEmail: EditText = view.findViewById<EditText>(R.id.registeremailEditText)
+            val enteredPassword: EditText = view.findViewById<EditText>(R.id.registerpasswordEditText)
+            val email = enteredEmail.text.toString().trim()
+            val password = enteredPassword.text.toString()
+
+            if (!isEmail(email)){
+                Toast.makeText(activity, "Enter a valid email", Toast.LENGTH_SHORT).show()
+            }
+            else if (password.length < 8){
+                Toast.makeText(activity, "Enter a password of atleast 8 characters", Toast.LENGTH_SHORT).show()
+            }
+            else if (!isPassword(password)){
+                Toast.makeText(activity, "Enter a password with atleast 1 uppercase letter and 1 number", Toast.LENGTH_LONG).show()
+            }
+            else{
+                val userDb = UserDatabase.getInstance(requireContext())
+                val userDao = userDb.userDao()
+                val user = User(email, password)
+                GlobalScope.launch(Dispatchers.IO) {
+                    userDao.insert(user)
+                }
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            }
+        }
+
+    }
+
+    private fun isEmail(email: String): Boolean{
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun isPassword(password: String): Boolean{
+        val pattern = "^(?=.*[A-Z])(?=.*[0-9]).{8,}$"
+        return password.matches(pattern.toRegex())
     }
 
     companion object {
