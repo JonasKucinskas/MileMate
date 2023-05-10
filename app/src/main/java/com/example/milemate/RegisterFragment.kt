@@ -50,21 +50,26 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val registerButton = view.findViewById<Button>(R.id.actualregisterbutton)
-        registerButton.setOnClickListener{
+            val registerButton = view.findViewById<Button>(R.id.actualregisterbutton)
+            registerButton.setOnClickListener{
             val enteredEmail: EditText = view.findViewById<EditText>(R.id.registeremailEditText)
             val enteredPassword: EditText = view.findViewById<EditText>(R.id.registerpasswordEditText)
+            val repeatedPassword: EditText = view.findViewById<EditText>(R.id.registerpasswordEditText2)
             val email = enteredEmail.text.toString().trim()
             val password = enteredPassword.text.toString()
+            val secondPassword = repeatedPassword.text.toString()
 
             if (!isEmail(email)){
-                Toast.makeText(activity, "Enter a valid email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Enter a valid email!", Toast.LENGTH_SHORT).show()
             }
             else if (password.length < 8){
-                Toast.makeText(activity, "Enter a password of atleast 8 characters", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Enter a password of at least 8 characters!", Toast.LENGTH_SHORT).show()
             }
             else if (!isPassword(password)){
-                Toast.makeText(activity, "Enter a password with atleast 1 uppercase letter and 1 number", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Enter a password with at least 1 uppercase letter and 1 number!", Toast.LENGTH_LONG).show()
+            }
+            else if (secondPassword != password){
+                Toast.makeText(activity, "Passwords do not match!", Toast.LENGTH_LONG).show()
             }
             else{
                 val userDb = UserDatabase.getInstance(requireContext())
