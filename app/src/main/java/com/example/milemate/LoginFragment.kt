@@ -6,8 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.milemate.database.UserDatabase
 import com.example.milemate.databinding.FragmentFirstBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,7 +57,24 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
         loginButton.setOnClickListener{
-            findNavController().navigate(R.id.action_loginFragment_to_FirstFragment)
+            val userDao = UserDatabase.getInstance(requireContext())
+            val enteredEmail: EditText = view.findViewById<EditText>(R.id.loginemailEditText)
+            val enteredPassword: EditText = view.findViewById<EditText>(R.id.loginpasswordEditText)
+            val email = enteredEmail.text.toString().trim()
+            val password = enteredPassword.text.toString().trim()
+
+            lifecycleScope.launch(Dispatchers.IO){
+                val user = userDao.userDao().getUserByEmailAndPassword(email, password)
+                withContext(Dispatchers.Main){
+                    if (user != null){
+                        Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_loginFragment_to_FirstFragment)
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 
