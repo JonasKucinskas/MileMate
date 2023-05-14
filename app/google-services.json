@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "184637817823",
+    "project_id": "milemate-453bc",
+    "storage_bucket": "milemate-453bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184637817823:android:9c142bd7edc0527122ba6a",
+        "android_client_info": {
+          "package_name": "com.example.milemate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184637817823-dkg4p02tcruvehk6mcjku0at06sgtalm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6Vagikvy9VeLKpHxMqQQjI4rWgCp4DWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184637817823-dkg4p02tcruvehk6mcjku0at06sgtalm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
