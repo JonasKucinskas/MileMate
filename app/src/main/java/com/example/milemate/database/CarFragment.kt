@@ -14,10 +14,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Database
+import androidx.navigation.fragment.findNavController
 import com.example.milemate.NotificationHelper
 import com.example.milemate.R
-import com.example.milemate.databinding.FragmentFirstBinding
 import org.json.JSONObject
 import java.io.File
 import java.io.FileReader
@@ -51,7 +50,6 @@ class CarFragment : Fragment() {
     private var selectedNumPickerDayMax = 0
 
 
-    private lateinit var binding : FragmentFirstBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +58,7 @@ class CarFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
 
     }
 
@@ -79,13 +78,18 @@ class CarFragment : Fragment() {
         ReadEverything()
 
         val selectedCalendar = java.util.Calendar.getInstance()
-        var dateSplit = selectedDatePicker.split("-")
-        var selectedDateYear = dateSplit.get(0).toInt()
-        var selectedDateMonth = dateSplit.get(1).toInt() - 1
-        var selMonth = selectedDateMonth + 1
-        var selectedDateDay = dateSplit.get(2).toInt()
+        val dateSplit = selectedDatePicker.split("-")
+        val selectedDateYear = dateSplit.get(0).toInt()
+        val selectedDateMonth = dateSplit.get(1).toInt() - 1
+        val selMonth = selectedDateMonth + 1
+        val selectedDateDay = dateSplit.get(2).toInt()
 
 
+
+        val driveButton = view.findViewById<Button>(R.id.DriveButton)
+        driveButton.setOnClickListener{//WTF IS THIS BULL SHIT
+            findNavController().navigate(R.id.action_carFragment_to_drivingStatsFragment)
+        }
 
 
         val checkupSetTextView = view.findViewById<TextView>(R.id.textViewExpiryCar)
@@ -299,7 +303,7 @@ class CarFragment : Fragment() {
     private fun SaveEverything(view: View)
     {
         val database = ViewModelProvider(this)[DBManager::class.java]
-        val saveButton = view.findViewById<Button>(R.id.SaveButton)
+        val saveButton = view.findViewById<Button>(R.id.saveButton)
 
 
         saveButton.setOnClickListener(){

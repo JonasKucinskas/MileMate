@@ -27,9 +27,9 @@ import java.util.*
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class TitleFragment : Fragment(), LocationListener {
+class TitleFragment : Fragment() {
 
-    private lateinit var gpsTracker: GPS
+
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1
     private var _binding: FragmentFirstBinding? = null
@@ -38,24 +38,6 @@ class TitleFragment : Fragment(), LocationListener {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    override fun onLocationChanged(p0: Location) {
-        val location = gpsTracker.getLocationInfo()
-        val speed = gpsTracker.getSpeed()
-        Toast.makeText(requireContext(), "Vieta: $location", Toast.LENGTH_LONG).show()
-        Toast.makeText(requireContext(), "Greitis: $speed", Toast.LENGTH_LONG).show()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        //Gonna update the gps as long as we're in this fragment
-        gpsTracker.startLocationUpdates()
-    }
-    override fun onStop() {
-        super.onStop()
-        //stopping updating gps when we leave fragment
-        gpsTracker.stopLocationUpdates()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +54,6 @@ class TitleFragment : Fragment(), LocationListener {
         super.onViewCreated(view, savedInstanceState)
 
         //Initialize gps here
-        gpsTracker = GPS(requireContext(), this)
 
         val navGraphActivity = activity as MainActivity
 

@@ -6,11 +6,14 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
 import java.util.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 class GPS(private val context: Context, private val locationListener: LocationListener) : LocationListener {
@@ -63,13 +66,29 @@ class GPS(private val context: Context, private val locationListener: LocationLi
         return location?.longitude ?: 0.0
     }
 
-    fun getSpeed(): Float {
+    fun getTraveledDistance(latitude: Double, longitude: Double): Double {
+        val R = 6371
+        // Radius of the earth in km
+        val dLat = deg2rad(latitude - getLatitude())
+        // deg2rad below
+        val dLon = deg2rad(longitude - getLongitude())
+        //Math vizardry:
+        val a = sin(dLat / 2) * sin(dLat / 2) + cos(deg2rad(getLatitude())) * cos(deg2rad(latitude)) * sin(dLon / 2) * sin(dLon / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        // Distance in km
+        return R * c
+    }
+    private fun deg2rad(deg: Double): Double {
+        return deg * (Math.PI / 180)
+    }
+    fun getSpeed(): Double {
         val currentTime = System.currentTimeMillis()
         val elapsedTime = currentTime - lastUpdateTime
 
         if (elapsedTime >= MIN_TIME_BW_UPDATES && lastLocation != null) {
             val distance = location?.let { lastLocation?.distanceTo(it) }
-            val speed = distance?.div(elapsedTime.toFloat()) ?: 0f
+            val speed = distance?.div(elapsedTime.toDouble()) ?: 0.0
 
             lastUpdateTime = currentTime
             lastLocation = location
@@ -77,7 +96,7 @@ class GPS(private val context: Context, private val locationListener: LocationLi
             return speed
         }
 
-        return 0f
+        return 0.0
     }
 
     fun getLocationInfo(): String {
@@ -117,6 +136,6 @@ class GPS(private val context: Context, private val locationListener: LocationLi
 
     companion object {
         private const val MIN_DISTANCE_CHANGE_FOR_UPDATES: Float = 10f
-        private const val MIN_TIME_BW_UPDATES: Long = 1000 * 60 * 1
+        private const val MIN_TIME_BW_UPDATES: Long = 2000//1000 * 60 * 1
     }
 }
