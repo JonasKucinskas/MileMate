@@ -1,6 +1,10 @@
 package com.example.milemate
 
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -21,8 +27,11 @@ import java.util.*
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class TitleFragment : Fragment() {
+class TitleFragment : Fragment(), LocationListener {
 
+    private lateinit var gpsTracker: GPS
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1
+    private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1
     private var _binding: FragmentFirstBinding? = null
     val maxCars = 4
 
@@ -30,23 +39,42 @@ class TitleFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    override fun onLocationChanged(p0: Location) {
+        val location = gpsTracker.getLocationInfo()
+        val speed = gpsTracker.getSpeed()
+        Toast.makeText(requireContext(), "Vieta: $location", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Greitis: $speed", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        //Gonna update the gps as long as we're in this fragment
+        gpsTracker.startLocationUpdates()
+    }
+    override fun onStop() {
+        super.onStop()
+        //stopping updating gps when we leave fragment
+        gpsTracker.stopLocationUpdates()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
+        PermissionFunction()
+
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Initialize gps here
+        gpsTracker = GPS(requireContext(), this)
 
         val navGraphActivity = activity as MainActivity
-
 
         val carAddButton = binding.root.findViewById<Button>(R.id.add_CarBtn)
         carAddButton.setOnClickListener{
@@ -103,6 +131,35 @@ class TitleFragment : Fragment() {
         }
 
     }
+
+    private fun PermissionFunction()
+    {
+        // Check if the location permission is granted
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        )
+        {
+            // Permission is not granted, request it
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        }
+
+        // Check if the notification permission is granted
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        )
+        {
+            // Permission is not granted, request it
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), NOTIFICATION_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+
+
+
     /*
     private fun reminderChecker(){//check if reminder file exists, if yes, check date, if date is today, send notification.
         val file = File(context?.filesDir.toString() + "/reminder.json")
