@@ -108,11 +108,13 @@ class CarFragment : Fragment() {
             carID = result?.toInt()
 
             // Database init
+            val fbDatabase = FireBase()
 
-            if (carID != null) {
-                // Getting car from database by its ID
-                database.getCar(carID!!).observe(viewLifecycleOwner)
-                { car ->
+            var pref = activity?.getSharedPreferences("Preferences", 0); // 0 - for private mode
+            var email = pref?.getString("loggedInUserEmail", null)
+
+            if (carID != null && email != null) {
+                fbDatabase.getCar(email, carID!!){ car ->
                     view.findViewById<TextView>(R.id.editTextCarName)?.text = car.name
                     view.findViewById<TextView>(R.id.editTextCarModel)?.text = car.brand
                     view.findViewById<TextView>(R.id.editTextNumberDecimal)?.text = car.mileage.toString()

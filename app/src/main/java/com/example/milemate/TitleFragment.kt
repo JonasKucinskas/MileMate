@@ -3,8 +3,6 @@ package com.example.milemate
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -20,7 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
+import com.example.milemate.database.FireBase
 import com.example.milemate.databinding.FragmentFirstBinding
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
@@ -33,7 +33,6 @@ class TitleFragment : Fragment() {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1
     private var _binding: FragmentFirstBinding? = null
-    val maxCars = 4
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -65,16 +64,38 @@ class TitleFragment : Fragment() {
         //reminderChecker()
         TyresReminder()
 
+        Firebase.database.setPersistenceEnabled(true)
+
         val viewModel = ViewModelProvider(this).get(DBManager::class.java)
         val noCarsTextview = view.findViewById<TextView>(R.id.textview_first)
 
-        viewModel.getAllCars().observe(viewLifecycleOwner)
+        var pref = activity?.getSharedPreferences("Preferences", 0); // 0 - for private mode
+        var email = pref?.getString("loggedInUserEmail", null)
+        if (email != null) {
+            FireBase().getUserCars(email){
+                val listView: ListView = view.findViewById(R.id.carlist)
+                val cars = it
+                listView.adapter = ListViewAdapter(context as Activity, cars)
+                listView.setOnItemClickListener { parent, view, position, id ->
+                    setFragmentResult("CarData", bundleOf("carID" to cars[position].id.toString()))
+                    navGraphActivity.navController.navigate(R.id.carFragment)
+                }
+
+                if(cars.isNotEmpty()){
+                    noCarsTextview.isVisible = false
+                }
+            }
+        }
+
+
+
+        /*viewModel.getAllCars().observe(viewLifecycleOwner)
         { cars ->
             // Cia accessint whatever car data
 
             val listView: ListView = view.findViewById(R.id.carlist)
             listView.adapter = ListViewAdapter(context as Activity, cars)
-            listView.setOnItemClickListener{parent, view, position, id ->
+            listView.setOnItemClickListener { parent, view, position, id ->
                 setFragmentResult("CarData", bundleOf("carID" to cars[position].id.toString()))
                 navGraphActivity.navController.navigate(R.id.carFragment)
             }
@@ -83,7 +104,7 @@ class TitleFragment : Fragment() {
                 noCarsTextview.isVisible = false
             }
 
-        }
+        }*/
     }
 
 
