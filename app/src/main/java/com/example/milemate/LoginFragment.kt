@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.milemate.database.FireBase
 
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -62,6 +63,16 @@ class LoginFragment : Fragment() {
                 if(authSuccess) {
                     Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_loginFragment_to_FirstFragment)
+
+                    var pref = activity?.getSharedPreferences("Preferences", 0); // 0 - for private mode
+                    var editor = pref?.edit();
+
+                    if (editor != null) {
+                        editor.putString("loggedInUserEmail", email)
+                        editor.commit()
+                    }
+
+
                 }else{
                     Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_SHORT).show()
                 }

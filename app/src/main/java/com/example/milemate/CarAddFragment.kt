@@ -11,12 +11,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.milemate.database.DBManager
+import com.example.milemate.database.FireBase
 import com.example.milemate.databinding.FragmentFirstBinding
 import java.io.File
 import java.io.FileOutputStream
-import java.time.LocalDate
 
 class CarAddFragment : Fragment() {
 
@@ -90,8 +88,18 @@ class CarAddFragment : Fragment() {
                 writeCarImage(carImage, carNameContent)
 
                 // Insert into database
-                val database = ViewModelProvider(this).get(DBManager::class.java)
-                database.insertCar(FirstCar)
+                //val database = ViewModelProvider(this).get(DBManager::class.java)
+                //database.insertCar(FirstCar)
+
+                // Firebase database
+                val fbDatabase = FireBase()
+
+                var pref = activity?.getSharedPreferences("Preferences", 0); // 0 - for private mode
+                var email = pref?.getString("loggedInUserEmail", null)
+
+                if (email != null) {
+                    fbDatabase.insertCar(email, FirstCar)
+                }
             }
         }
 

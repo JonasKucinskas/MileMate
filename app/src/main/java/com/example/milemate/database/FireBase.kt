@@ -1,7 +1,7 @@
 package com.example.milemate.database
 
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import android.util.Log
+import com.google.firebase.database.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -37,6 +37,88 @@ class FireBase() {
             }
             callback(exist)
         }
+    }
+
+    fun insertCar(email: String, car: com.example.milemate.Car){
+        val escapedEmail = escapeEmail(email)
+
+        getNewCarID(email){
+            val path = dbRef.child(escapedEmail).child("cars").child((it).toString())
+            path.child("name").setValue(car.carName)
+            path.child("model").setValue(car.carBrand)
+            path.child("mileage").setValue(car.carMileage)
+        }
+    }
+
+    fun getCar(email: String, carID: Int, callback: (car: Car) -> Unit){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars").child(carID.toString())
+
+        path.get().addOnSuccessListener {
+            val name: String = it.child("name").value.toString()
+            val model: String = it.child("model").value.toString()
+            val mileage: Int = Integer.parseInt(it.child("mileage").value.toString())
+            val checkupReminder: String = it.child("checkupReminder").value.toString()
+            val checkupDate: String = it.child("checkupDate").value.toString()
+
+            callback(Car(carID, name, model, mileage, checkupReminder, checkupDate))
+        }
+    }
+
+    fun getUserCars(email: String, callback: (exist: ArrayList<Car>) -> Unit){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars")
+        var cars : ArrayList<Car> = ArrayList()
+
+        path.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(car in snapshot.children){
+                    Log.e("FIREBASE DATA FETCH", "Value: ${car.value}")
+
+                    var mileage : Int = 0
+
+                    if(car.child("mileage").value != null){
+                        mileage = Integer.parseInt(car.child("mileage").value.toString())
+                    }
+
+                    cars.add(Car(Integer.parseInt(car.key),
+                        car.child("name").value.toString(),
+                        car.child("model").value.toString(),
+                        mileage,
+                        car.child("checkupReminder").value.toString(),
+                        car.child("checkupDate").value.toString()
+                    ))
+                }
+                callback(cars)
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
+
+    }
+
+    fun getNewCarID(email: String, callback: (newid: Int) -> Unit){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars")
+
+        path.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var biggestID = 1
+                for(id in snapshot.children) {
+
+                    val idValue : Int? = id.key?.let { Integer.parseInt(it) }
+                    if(biggestID < idValue!!){
+                        biggestID = idValue
+                    }
+                }
+                callback(biggestID+1)
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
     }
 
     private fun escapeEmail(email: String) : String{

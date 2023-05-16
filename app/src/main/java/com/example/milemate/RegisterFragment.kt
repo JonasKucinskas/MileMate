@@ -59,7 +59,7 @@ class RegisterFragment : Fragment() {
             if (!isEmail(email)){
                 Toast.makeText(activity, "Enter a valid email!", Toast.LENGTH_SHORT).show()
             }
-            else if (password.length < 8){
+            /*else if (password.length < 8){
                 Toast.makeText(activity, "Enter a password of at least 8 characters!", Toast.LENGTH_SHORT).show()
             }
             else if (!isPassword(password)){
@@ -67,7 +67,7 @@ class RegisterFragment : Fragment() {
             }
             else if (secondPassword != password){
                 Toast.makeText(activity, "Passwords do not match!", Toast.LENGTH_LONG).show()
-            }
+            }*/
             else{
                 database.userExist(email){ exist ->
                     if(exist){
