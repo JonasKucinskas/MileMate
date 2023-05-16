@@ -1,3 +1,4 @@
+![MileMate Logo](https://cdn.discordapp.com/attachments/1080586295987941491/1108164220870197309/ic_launcher.png)
 # MileMate
 
 University semester task for computer-science students.
