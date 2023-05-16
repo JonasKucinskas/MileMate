@@ -68,7 +68,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.milemate.LoginFragment"
-        android:label="fragment_login"
+        android:label="@string/login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
@@ -80,7 +80,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.milemate.RegisterFragment"
-        android:label="fragment_register"
+        android:label="@string/registration"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
@@ -89,7 +89,7 @@
     <fragment
         android:id="@+id/drivingStatsFragment"
         android:name="com.example.milemate.DrivingStatsFragment"
-        android:label="fragment_driving_stats"
+        android:label="@string/drive_stats"
         tools:layout="@layout/fragment_driving_stats" >
         <action
             android:id="@+id/action_drivingStatsFragment_to_carFragment"
