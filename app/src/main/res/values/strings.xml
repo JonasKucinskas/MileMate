@@ -51,6 +51,9 @@
     <string name="saved_images">/data/user/0/com.example.milemate/files/saved_images</string>
     <string name="edit_car_information">Edit car information</string>
     <string name="settings">Settings</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="drive_stats">Driving statistics</string>
 
     <!-- Strings for user settings -->
     <string-array name="array_regions">
