@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.milemate.database.DBManager
 import com.example.milemate.databinding.FragmentFirstBinding
 import java.io.File
@@ -77,8 +78,6 @@ class CarAddFragment : Fragment() {
                 errorCount++;
             }
 
-
-
             if (errorCount == 0) {
                 FirstCar = Car(carNameContent, carBrandContent, carMileageContent, null, null)//reminder is null because user cant set reminders in car add fragment
                 Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
@@ -92,7 +91,9 @@ class CarAddFragment : Fragment() {
                 // Insert into database
                 val database = ViewModelProvider(this).get(DBManager::class.java)
                 database.insertCar(FirstCar)
+
             }
+            findNavController().navigate(R.id.action_carAddFragmentNav_to_carList)
         }
 
     }

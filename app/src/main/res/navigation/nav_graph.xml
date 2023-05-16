@@ -34,11 +34,16 @@
         android:name="com.example.milemate.CarAddFragment"
         tools:layout="@layout/fragment_car_add" >
         <action
-            android:id="@+id/action_carAddFragmentNav_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_carAddFragmentNav_to_carList"
+            app:destination="@id/carList" />
     </fragment>
 
-
+    <fragment
+        android:id="@+id/carList"
+        android:label="Cars"
+        android:name="com.example.milemate.ListViewAdapter"
+        tools:layout="@layout/list_item" >
+    </fragment>
 
     <!-- CheckUpFragmentNav -->
 
