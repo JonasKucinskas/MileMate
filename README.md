@@ -1,14 +1,14 @@
-#MileMate
+# MileMate
 
 University semester task for computer-science students.
 
 
-##What is MileMate?
+## What is MileMate?
 
 Initially, MileMate is a mobile app that keeps track of your driving and gives you constant reminders on when to check your car maintenance, oil, brakes and other specifics.
 
 
-##How to use MileMate
+## How to use MileMate
 
 When app is first opened user is presented with login/register screen. Once login information is entered, user can access and use our app.
 
