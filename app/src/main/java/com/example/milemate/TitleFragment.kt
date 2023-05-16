@@ -33,7 +33,6 @@ class TitleFragment : Fragment(), LocationListener {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1
     private var _binding: FragmentFirstBinding? = null
-    val maxCars = 4
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -93,7 +92,7 @@ class TitleFragment : Fragment(), LocationListener {
 
             val listView: ListView = view.findViewById(R.id.carlist)
             listView.adapter = ListViewAdapter(context as Activity, cars)
-            listView.setOnItemClickListener{parent, view, position, id ->
+            listView.setOnItemClickListener { parent, view, position, id ->
                 setFragmentResult("CarData", bundleOf("carID" to cars[position].id.toString()))
                 navGraphActivity.navController.navigate(R.id.carFragment)
             }

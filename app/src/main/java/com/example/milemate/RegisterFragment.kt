@@ -2,19 +2,14 @@ package com.example.milemate
 
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
-import com.example.milemate.database.User
-import com.example.milemate.database.UserDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
+import com.example.milemate.database.FireBase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,14 +45,16 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            val registerButton = view.findViewById<Button>(R.id.actualregisterbutton)
-            registerButton.setOnClickListener{
-            val enteredEmail: EditText = view.findViewById<EditText>(R.id.registeremailEditText)
-            val enteredPassword: EditText = view.findViewById<EditText>(R.id.registerpasswordEditText)
-            val repeatedPassword: EditText = view.findViewById<EditText>(R.id.registerpasswordEditText2)
+        val registerButton = view.findViewById<Button>(R.id.actualregisterbutton)
+        registerButton.setOnClickListener{
+            val enteredEmail: EditText = view.findViewById(R.id.registeremailEditText)
+            val enteredPassword: EditText = view.findViewById(R.id.registerpasswordEditText)
+            val repeatedPassword: EditText = view.findViewById(R.id.registerpasswordEditText2)
             val email = enteredEmail.text.toString().trim()
             val password = enteredPassword.text.toString()
             val secondPassword = repeatedPassword.text.toString()
+
+            val database = FireBase()
 
             if (!isEmail(email)){
                 Toast.makeText(activity, "Enter a valid email!", Toast.LENGTH_SHORT).show()
@@ -72,13 +69,15 @@ class RegisterFragment : Fragment() {
                 Toast.makeText(activity, "Passwords do not match!", Toast.LENGTH_LONG).show()
             }
             else{
-                val userDb = UserDatabase.getInstance(requireContext())
-                val userDao = userDb.userDao()
-                val user = User(email, password)
-                GlobalScope.launch(Dispatchers.IO) {
-                    userDao.insert(user)
+                database.userExist(email){ exist ->
+                    if(exist){
+                        Toast.makeText(activity, "Email is already taken!", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        database.addUser(email, password)
+                        Toast.makeText(activity, "Registration successful!", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             }
         }
 
