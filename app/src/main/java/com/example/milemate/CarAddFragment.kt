@@ -85,7 +85,7 @@ class CarAddFragment : Fragment() {
                 val notificationHelper = NotificationHelper(requireContext())
                 notificationHelper.sendNotification("MileMate", "Car Added successfully!", 0)
 
-                writeCarImage(carImage, carNameContent)
+                writeCarImage(carImage, carNameContent + )
 
                 // Insert into database
                 //val database = ViewModelProvider(this).get(DBManager::class.java)

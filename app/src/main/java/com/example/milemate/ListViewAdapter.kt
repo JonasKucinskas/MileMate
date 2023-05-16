@@ -30,16 +30,16 @@ class ListViewAdapter(private val context : Activity, private val carList : List
 
         val ImageFolder = context.getString(R.string.saved_images)
         // Loads image onto carPlaceHolders
-        val CurrentCarImagePath = ImageFolder + "/" + carList[position].name + ".jpg"
+        val CurrentCarImagePath = ImageFolder + "/" + carList[position].name + carList[position].id + ".jpg"
 
         if(File(CurrentCarImagePath).exists()) {
             val bitmap = BitmapFactory.decodeFile(CurrentCarImagePath)
             carImage.setImageBitmap(bitmap)
         }
 
-        //deleteButton.setOnClickListener{
-         // Implement button for car deletion
-        //}
+        deleteButton.setOnClickListener{
+
+        }
 
         return view;
     }

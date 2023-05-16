@@ -47,19 +47,19 @@ class RegisterFragment : Fragment() {
 
         val registerButton = view.findViewById<Button>(R.id.actualregisterbutton)
         registerButton.setOnClickListener{
-            val enteredEmail: EditText = view.findViewById(R.id.registeremailEditText)
+            val enteredUsername: EditText = view.findViewById(R.id.registerusernamelEditText)
             val enteredPassword: EditText = view.findViewById(R.id.registerpasswordEditText)
             val repeatedPassword: EditText = view.findViewById(R.id.registerpasswordEditText2)
-            val email = enteredEmail.text.toString().trim()
+            val username = enteredUsername.text.toString().trim()
             val password = enteredPassword.text.toString()
             val secondPassword = repeatedPassword.text.toString()
 
             val database = FireBase()
 
-            if (!isEmail(email)){
+            /*if (!isEmail(email)){
                 Toast.makeText(activity, "Enter a valid email!", Toast.LENGTH_SHORT).show()
-            }
-            /*else if (password.length < 8){
+            }*/
+            if (password.length < 8){
                 Toast.makeText(activity, "Enter a password of at least 8 characters!", Toast.LENGTH_SHORT).show()
             }
             else if (!isPassword(password)){
@@ -67,24 +67,18 @@ class RegisterFragment : Fragment() {
             }
             else if (secondPassword != password){
                 Toast.makeText(activity, "Passwords do not match!", Toast.LENGTH_LONG).show()
-            }*/
-            else{
-                database.userExist(email){ exist ->
-                    if(exist){
-                        Toast.makeText(activity, "Email is already taken!", Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        database.addUser(email, password)
-                        Toast.makeText(activity, "Registration successful!", Toast.LENGTH_SHORT).show()
-                    }
+            }
+            database.userExist(username){ exist ->
+                if(exist){
+                    Toast.makeText(activity, "Username is already taken!", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    database.addUser(username, password)
+                    Toast.makeText(activity, "Registration successful!", Toast.LENGTH_SHORT).show()
                 }
             }
+
         }
-
-    }
-
-    private fun isEmail(email: String): Boolean{
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private fun isPassword(password: String): Boolean{

@@ -53,13 +53,13 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
         loginButton.setOnClickListener{
-            val enteredEmail: EditText = view.findViewById(R.id.loginemailEditText)
+            val enteredUsername: EditText = view.findViewById(R.id.loginusernameEditText)
             val enteredPassword: EditText = view.findViewById(R.id.loginpasswordEditText)
-            val email = enteredEmail.text.toString().trim()
+            val username = enteredUsername.text.toString().trim()
             val password = enteredPassword.text.toString().trim()
 
             val database = FireBase()
-            database.authenticateUser(email, password){ authSuccess ->
+            database.authenticateUser(username, password){ authSuccess ->
                 if(authSuccess) {
                     Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_loginFragment_to_FirstFragment)
@@ -68,13 +68,13 @@ class LoginFragment : Fragment() {
                     var editor = pref?.edit();
 
                     if (editor != null) {
-                        editor.putString("loggedInUserEmail", email)
+                        editor.putString("loggedInUserEmail", username)
                         editor.commit()
                     }
 
 
                 }else{
-                    Toast.makeText(requireContext(), "Invalid email or password", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Invalid username or password", Toast.LENGTH_SHORT).show()
                 }
             }
 
