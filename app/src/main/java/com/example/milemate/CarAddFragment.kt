@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
+import com.example.milemate.databinding.FragmentFirstBinding
 import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDate
@@ -21,6 +22,13 @@ class CarAddFragment : Fragment() {
 
     private var FirstCar = Car("", "", "", null, null)
     private var carImage: Bitmap? = null
+
+    private var _binding: FragmentFirstBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +51,8 @@ class CarAddFragment : Fragment() {
             intent.action = "android.intent.action.PICK"
             startActivityForResult(intent, 100)
         }
+
+
 
         //Button click event to create car object
         addCarButton.setOnClickListener {

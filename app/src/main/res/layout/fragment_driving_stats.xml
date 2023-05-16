@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DrivingStatsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Chronometer
+            android:id="@+id/timer"
+            android:layout_width="140dp"
+            android:layout_height="52dp"
+            android:layout_margin="20dp"
+            android:layout_marginTop="256dp"
+            android:layout_marginEnd="68dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toTopOf="@+id/speedText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fuelText"
+            android:layout_width="408dp"
+            android:layout_height="86dp"
+            android:text="fuelText"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/speedText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timer" />
+
+        <TextView
+            android:id="@+id/speedText"
+            android:layout_width="408dp"
+            android:layout_height="86dp"
+            android:text="SpeedText"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/KelionesKainaText"
+            android:layout_width="408dp"
+            android:layout_height="86dp"
+            android:layout_marginTop="103dp"
+            android:text="KelionesKaina"
+            android:textSize="48sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/speedText" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="249dp"
+            android:layout_height="52dp"
+            android:text="Kelionės trukmė:"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/timer"
+            app:layout_constraintEnd_toStartOf="@+id/timer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/timer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
