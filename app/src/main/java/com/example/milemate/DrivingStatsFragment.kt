@@ -109,7 +109,7 @@ class DrivingStatsFragment : Fragment(), LocationListenerr {
     }
 
     private fun getFuelConsumption(distance: Double, fuelEfficiency: Double) : Double {
-        return distance / fuelEfficiency * 100
+        return distance * fuelEfficiency / 100
     }
 
     private fun getTripCost(fuelPrice: Double, fuelUsed: Double) : Double{
