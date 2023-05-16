@@ -22,7 +22,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [DrivingStatsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DrivingStatsFragment : Fragment(), LocationListener {
+class DrivingStatsFragment : Fragment(), LocationListenerr {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -31,7 +31,10 @@ class DrivingStatsFragment : Fragment(), LocationListener {
     private lateinit var speedText: TextView
     private lateinit var tripCostText: TextView
     private lateinit var fuelText: TextView
+    private lateinit var distanceTraveledText: TextView
     private lateinit var timer: Chronometer
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,27 +42,37 @@ class DrivingStatsFragment : Fragment(), LocationListener {
         speedText = view.findViewById(R.id.speedText)
         fuelText = view.findViewById(R.id.fuelText)
         tripCostText = view.findViewById(R.id.KelionesKainaText)
+        distanceTraveledText = view.findViewById(R.id.distanceTraveledText)
         timer = view.findViewById(R.id.timer)
 
         timer.start()
+        gpsTracker = GPS(requireContext(), this)
+        gpsTracker.startLocationUpdates()
     }
 
-    override fun onLocationChanged(p0: Location) {
+    override fun onDistanceChanged(traveledDistance: Double) {
 
-        //Toast.makeText(requireContext(), "Vieta: $location", Toast.LENGTH_LONG).show()
+        val formattedDistance = String.format("%.2f", traveledDistance)
+        var fuelUsed = getFuelConsumption(traveledDistance, 7.0)
+        var tripCost = getTripCost(1.5, fuelUsed)
+        var tripCostNew = String.format("%.2f", tripCost)
+        var fuelUsedNew = String.format("%.2f", fuelUsed)
+        fuelText.text = "Sunaudota kuro: $fuelUsedNew"//pajibat iš lempos tą fuel efficiency
+        tripCostText.text = "Kelionės kaina: $tripCostNew"
+        distanceTraveledText.text = "Nuvažiuotas atstumas: $formattedDistance"
+        Log.d("Distance traveled:", "$traveledDistance")
 
-        val longitude = gpsTracker.getLongitude()
-        val latitude = gpsTracker.getLatitude()
+    }
 
-        val traveledDistance = gpsTracker.getTraveledDistance(latitude, longitude)
-        val fuelUsed = getFuelConsumption(traveledDistance, 7.0)
-        val speed = gpsTracker.getSpeed()
-        val tripCost = getTripCost(1.5, fuelUsed)
-        fuelText.text = "Sunaudota kuro: $fuelUsed"//pajibat iš lempos tą fuel efficiency
-        speedText.text = "Greitis: $speed"
-        tripCostText.text = "Kelionės kaina: $tripCost"
+    override fun onSpeedChanged(speed: Double) {
+        var speedak = speed.toInt()
+        speedText.text = "Greitis: $speedak"
+    }
 
-        Log.d("Distance traveled:", "${gpsTracker.getTraveledDistance(latitude, longitude)}")
+    override fun onLocationChanged(location: Location) {
+
+        Log.d("LocationChanged", "New location received: $location")
+
     }
 
     override fun onStart() {
@@ -74,6 +87,7 @@ class DrivingStatsFragment : Fragment(), LocationListener {
         super.onStop()
         //stopping updating gps when we leave fragment
         gpsTracker.stopLocationUpdates()
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +103,7 @@ class DrivingStatsFragment : Fragment(), LocationListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        gpsTracker = GPS(requireContext(), this)
+        //gpsTracker = GPS(requireContext(), this)
 
         return inflater.inflate(R.layout.fragment_driving_stats, container, false)
     }
