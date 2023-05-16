@@ -189,12 +189,10 @@
         android:id="@+id/DriveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable = "true"
+        android:clickable="true"
         android:text="Drive"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/numberPickerMonth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerMonth" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRemindBefore"
+        tools:layout_editor_absoluteX="18dp" />
 
     <Button
         android:id="@+id/saveButton"
@@ -202,8 +200,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/numberPickerDay"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerDay" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewRemindBefore" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -102,10 +102,6 @@ class GPS(private val context: Context, private val locationListener: LocationLi
         return traveledDistance
     }
 
-    private fun deg2rad(deg: Double): Double {
-        return deg * (Math.PI / 180)
-    }
-
     fun getSpeed(): Double {
         val currentTime = System.currentTimeMillis()
         val elapsedTime = currentTime - lastUpdateTime
@@ -124,7 +120,7 @@ class GPS(private val context: Context, private val locationListener: LocationLi
             Log.d("Speed", "Last Update Time: $lastUpdateTime, Last Location: $lastLocation")
 
             if (distance != null) {
-                traveledDistance += distance
+                traveledDistance += distance / 1000
             }
 
             return speedKilometersPerHour
