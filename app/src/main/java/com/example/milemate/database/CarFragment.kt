@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.graphics.BitmapFactory
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,11 +85,14 @@ class CarFragment : Fragment() {
         val selMonth = selectedDateMonth + 1
         val selectedDateDay = dateSplit.get(2).toInt()
 
-
-
         val driveButton = view.findViewById<Button>(R.id.DriveButton)
         driveButton.setOnClickListener{//WTF IS THIS BULL SHIT
             findNavController().navigate(R.id.action_carFragment_to_drivingStatsFragment)
+        }
+
+        val deleteButton = view.findViewById<Button>(R.id.DeleteButton)
+        deleteButton.setOnClickListener{
+            Log.d("test", "test")
         }
 
 
