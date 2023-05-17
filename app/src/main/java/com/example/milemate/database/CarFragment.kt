@@ -12,7 +12,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.NumberPicker
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -276,7 +278,7 @@ class CarFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-
+        setFragmentResult("CarData", bundleOf("carID" to carID.toString()))
 
     }
 
@@ -288,20 +290,20 @@ class CarFragment : Fragment() {
             val jsonString = fileReader.readText()
             val jsonObject = JSONObject(jsonString)
 
-            if(jsonObject.has("datePicker"))
-                selectedDatePicker = jsonObject.getString("datePicker")
+            if(jsonObject.has("datePicker$carID"))
+                selectedDatePicker = jsonObject.getString("datePicker$carID")
 
-            if(jsonObject.has("numPickerMonth"))
-                selectedNumPickerMonth = jsonObject.getInt("numPickerMonth")
+            if(jsonObject.has("numPickerMonth$carID"))
+                selectedNumPickerMonth = jsonObject.getInt("numPickerMonth$carID")
 
-            if(jsonObject.has("numPickerDay"))
-                selectedNumPickerDay = jsonObject.getInt("numPickerDay")
+            if(jsonObject.has("numPickerDay$carID"))
+                selectedNumPickerDay = jsonObject.getInt("numPickerDay$carID")
 
-            if(jsonObject.has("numPickerDayMax"))
-                selectedNumPickerDayMax = jsonObject.getInt("numPickerDayMax")
+            if(jsonObject.has("numPickerDayMax$carID"))
+                selectedNumPickerDayMax = jsonObject.getInt("numPickerDayMax$carID")
 
-            if(jsonObject.has("numPickerMonthMax"))
-                selectedNumPickerMonthMax = jsonObject.getInt("numPickerMonthMax")
+            if(jsonObject.has("numPickerMonthMax$carID"))
+                selectedNumPickerMonthMax = jsonObject.getInt("numPickerMonthMax$carID")
 
         }
     }
@@ -325,11 +327,11 @@ class CarFragment : Fragment() {
 
 
             val jsonObject = JSONObject()
-            jsonObject.put("datePicker", selectedDatePicker)
-            jsonObject.put("numPickerMonth", selectedNumPickerMonth)
-            jsonObject.put("numPickerDay", selectedNumPickerDay)
-            jsonObject.put("numPickerMonthMax", selectedNumPickerMonthMax)
-            jsonObject.put("numPickerDayMax", selectedNumPickerDayMax)
+            jsonObject.put("datePicker$carID", selectedDatePicker)
+            jsonObject.put("numPickerMonth$carID", selectedNumPickerMonth)
+            jsonObject.put("numPickerDay$carID", selectedNumPickerDay)
+            jsonObject.put("numPickerMonthMax$carID", selectedNumPickerMonthMax)
+            jsonObject.put("numPickerDayMax$carID", selectedNumPickerDayMax)
 
             val file = File(requireActivity().filesDir,"carfragment.json")
 

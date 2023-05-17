@@ -26,6 +26,12 @@ class FireBase() {
         }
     }
 
+    fun setCarMileage(email: String, carid: Int, mileage: Int){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars").child((carid).toString())
+        path.child("mileage").setValue(mileage)
+    }
+
     fun userExist(email: String, callback: (exist: Boolean) -> Unit){
         val escapedEmail = escapeEmail(email)
         var exist = false
@@ -106,20 +112,31 @@ class FireBase() {
 
         path.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                var biggestID = 1
+                var currentID = 0
+
                 for(id in snapshot.children) {
 
-                    val idValue : Int? = id.key?.let { Integer.parseInt(it) }
-                    if(biggestID < idValue!!){
-                        biggestID = idValue
+                    val idValue: Int? = id.key?.let { Integer.parseInt(it) }
+                    if (currentID < idValue!!) {
+                        break
                     }
+                    currentID++
                 }
-                callback(biggestID+1)
+                callback(currentID)
             }
             override fun onCancelled(error: DatabaseError) {
             }
         })
     }
+
+    fun getCarMileage(email: String, carid: Int, callback: (mileage: Int) -> Unit){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars").child((carid).toString())
+        path.child("mileage").get().addOnSuccessListener{
+            callback(Integer.parseInt(it.value.toString()))
+        }
+    }
+
 
     private fun escapeEmail(email: String) : String{
         return email.replace("@", "").replace(".", "")
