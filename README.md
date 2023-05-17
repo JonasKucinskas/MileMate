@@ -6,9 +6,13 @@ University semester task for computer-science students.
 ## Team
 
 •	Alanas Švažas - Product owner
+
 •	Jonas Kučinskas - Scrum master
+
 •	Deividas Grinius - Developer
+
 •	Edvinas Serapinas - Developer
+
 •	Mantas Vansauskas - Developer
 
 
