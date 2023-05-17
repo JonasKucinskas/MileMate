@@ -33,23 +33,29 @@ In order to start your trip and view such information as current fuel consumptio
 ### 1. Registration and log-in
 
 ![Reg1_img](https://media.discordapp.net/attachments/1108332970672132249/1108333022966726696/image.png?width=161&height=346)
+
 Test to see if multiple usernames are available.
 
 ![Reg2_img](https://media.discordapp.net/attachments/1108332970672132249/1108333023314849852/image.png?width=161&height=350)
+
 Test to see if password matches criteria (1 uppercase and 8 symbols).
 
 ![Reg3_img](https://cdn.discordapp.com/attachments/1108332970672132249/1108333023621029888/image.png)
+
 Test to see if registration is successful if passwords don't match.
 
 ![Login_img](https://cdn.discordapp.com/attachments/1108332970672132249/1108333023952388126/image.png)
+
 Test to see if logging in is successful upon entering invalid data.
 
 ### 2. Car check-up
 
 ![Tech1_img](https://media.discordapp.net/attachments/1108332970672132249/1108334352309424269/image.png?width=189&height=397)
+
 Testing selecting car check-up expiry selection.
 
 ![Tech2_img](https://media.discordapp.net/attachments/1108332970672132249/1108334352653369476/image.png?width=192&height=402)
+
 Testing car expiry reminder date selection.
 
 ### 3. Car add
@@ -57,6 +63,7 @@ Testing car expiry reminder date selection.
 ![Add1_img](https://media.discordapp.net/attachments/1108332970672132249/1108335029597261935/image.png?width=165&height=363) 
 ![Add2_img](https://media.discordapp.net/attachments/1108332970672132249/1108335029861486622/image.png?width=166&height=358)
 ![Add3_img](https://media.discordapp.net/attachments/1108332970672132249/1108335030222192680/image.png?width=174&height=355)
+
 Testing to see if new cars can be added.
 
 ### 4. User driver's license expiry
