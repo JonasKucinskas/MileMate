@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import java.io.File
@@ -23,8 +22,6 @@ class ListViewAdapter(private val context : Activity, private val carList : List
         val carBrand = view.findViewById<TextView>(R.id.listitem_car_brand)
         val carImage = view.findViewById<ImageView>(R.id.listitem_car_image)
 
-        //val deleteButton = view.findViewById<Button>(R.id.buttonDelete)
-
         carName.text = carList[position].name
         carBrand.text = carList[position].brand
 
@@ -37,9 +34,6 @@ class ListViewAdapter(private val context : Activity, private val carList : List
             carImage.setImageBitmap(bitmap)
         }
 
-        //deleteButton.setOnClickListener{
-
-        //}
 
         return view;
     }

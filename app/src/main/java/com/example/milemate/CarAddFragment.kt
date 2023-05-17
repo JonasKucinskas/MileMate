@@ -75,8 +75,6 @@ class CarAddFragment : Fragment() {
                 errorCount++;
             }
 
-
-
             if (errorCount == 0) {
                 FirstCar = Car(carNameContent, carBrandContent, carMileageContent, null, null)//reminder is null because user cant set reminders in car add fragment
                 Toast.makeText(activity, "Car added successfully!", Toast.LENGTH_SHORT).show()
@@ -104,6 +102,9 @@ class CarAddFragment : Fragment() {
         }
 
     }
+
+
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

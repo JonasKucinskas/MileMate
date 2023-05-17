@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.graphics.BitmapFactory
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,14 +15,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.milemate.NotificationHelper
 import com.example.milemate.R
-import org.json.JSONObject
 import java.io.File
-import java.io.FileReader
-import java.io.FileWriter
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -78,43 +73,29 @@ class CarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ReadEverything()
+        //ReadEverything()
 
         val selectedCalendar = java.util.Calendar.getInstance()
-        val dateSplit = selectedDatePicker.split("-")
-        val selectedDateYear = dateSplit.get(0).toInt()
-        val selectedDateMonth = dateSplit.get(1).toInt() - 1
-        val selMonth = selectedDateMonth + 1
-        val selectedDateDay = dateSplit.get(2).toInt()
+
 
         val driveButton = view.findViewById<Button>(R.id.DriveButton)
         driveButton.setOnClickListener{//WTF IS THIS BULL SHIT
             findNavController().navigate(R.id.action_carFragment_to_drivingStatsFragment)
         }
 
-        val deleteButton = view.findViewById<Button>(R.id.DeleteButton)
-        deleteButton.setOnClickListener{
-            Log.d("test", "test")
-        }
-
-
         val checkupSetTextView = view.findViewById<TextView>(R.id.textViewExpiryCar)
-        val database = ViewModelProvider(this)[DBManager::class.java]
+        var selectedDateYear = 0
+        var selectedDateMonth = 0
+        var selectedDateDay = 0
 
-
-
-        selectedCalendar.set(selectedDateYear, selectedDateMonth, selectedDateDay)
-        checkupSetTextView.text = "Expiry date set at: $selMonth/$selectedDateDay"
-
+        // Database init
+        val fbDatabase = FireBase()
 
         setFragmentResultListener("CarData") { _, bundle ->
 
             // Getting a selected car id from previous fragment
             val result = bundle.getString("carID")
             carID = result?.toInt()
-
-            // Database init
-            val fbDatabase = FireBase()
 
             var pref = activity?.getSharedPreferences("Preferences", 0); // 0 - for private mode
             var email = pref?.getString("loggedInUserEmail", null)
@@ -125,10 +106,30 @@ class CarFragment : Fragment() {
                     view.findViewById<TextView>(R.id.editTextCarModel)?.text = car.brand
                     view.findViewById<TextView>(R.id.editTextNumberDecimal)?.text = car.mileage.toString()
 
+                    val escapedEmail = FireBase().escapeEmail(email)
+                    val path = FireBase().dbRef.child(escapedEmail).child("cars").child(carID.toString())
 
-                    if (car.checkupReminder != null){
-                        checkupSetTextView.text = car.checkupReminder.toString()
+                    path.get().addOnSuccessListener{
+                        //Log.e("test", "test: ${it.child(date)}")
+                        selectedDatePicker = it.child("datePicker").value.toString()
+                        selectedNumPickerMonth = Integer.parseInt(it.child("numPickerMonth").value.toString())
+                        selectedNumPickerDay = Integer.parseInt(it.child("numPickerDay").value.toString())
+                        selectedNumPickerMonthMax = Integer.parseInt(it.child("numPickerMonthMax").value.toString())
+                        selectedNumPickerDayMax = Integer.parseInt(it.child("numPickerDayMax").value.toString())
+
+                        val dateSplit = selectedDatePicker.split("-")
+                        selectedDateYear = dateSplit.get(0).toInt()
+                        selectedDateMonth = dateSplit.get(1).toInt() - 1
+                        val selMonth = selectedDateMonth + 1
+                        selectedDateDay = dateSplit.get(2).toInt()
+
+                        selectedCalendar.set(selectedDateYear, selectedDateMonth, selectedDateDay)
+                        checkupSetTextView.text = "Expiry date set at: $selMonth/$selectedDateDay"
                     }
+
+                    //if (car.checkupReminder != null){
+                    //    checkupSetTextView.text = car.checkupReminder.toString()
+                    //}
 
 
                     val imageFolder = getString(R.string.saved_images)
@@ -140,12 +141,21 @@ class CarFragment : Fragment() {
                     }
                 }
             }
+
+            val deleteButton = view.findViewById<Button>(R.id.DeleteButton)
+            deleteButton.setOnClickListener{
+                val escapedEmail = email?.let { it1 -> fbDatabase.escapeEmail(it1) }
+                carID?.let { it1 ->
+                    if (escapedEmail != null) {
+                        fbDatabase.removeCar(escapedEmail, it1)
+                        findNavController().navigate(R.id.action_carFragment_to_FirstFragment)
+                    }
+                }
+            }
         }
 
         val numPickerMonth = view.findViewById<NumberPicker>(R.id.numberPickerMonth)
         val numPickerDay = view.findViewById<NumberPicker>(R.id.numberPickerDay)
-
-
 
         numPickerMonth.maxValue = selectedNumPickerMonthMax
         numPickerDay.maxValue = selectedNumPickerDayMax
@@ -277,22 +287,23 @@ class CarFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         setFragmentResult("CarData", bundleOf("carID" to carID.toString()))
 
     }
 
     private fun ReadEverything()
     {
-        val file = File(requireActivity().filesDir,"carfragment.json")
+        /*val file = File(requireActivity().filesDir,"carfragment.json")
         if(file.canRead()) {
+
             val fileReader = FileReader(file)
             val jsonString = fileReader.readText()
             val jsonObject = JSONObject(jsonString)
 
-            if(jsonObject.has("datePicker$carID"))
+            if(jsonObject.has("datePicker$carID")) {
                 selectedDatePicker = jsonObject.getString("datePicker$carID")
-
+                Log.e("read", "reading...")
+            }
             if(jsonObject.has("numPickerMonth$carID"))
                 selectedNumPickerMonth = jsonObject.getInt("numPickerMonth$carID")
 
@@ -305,28 +316,41 @@ class CarFragment : Fragment() {
             if(jsonObject.has("numPickerMonthMax$carID"))
                 selectedNumPickerMonthMax = jsonObject.getInt("numPickerMonthMax$carID")
 
-        }
+        }*/
     }
 
     private fun SaveEverything(view: View)
     {
-        val database = ViewModelProvider(this)[DBManager::class.java]
+        val database = FireBase()
         val saveButton = view.findViewById<Button>(R.id.saveButton)
 
 
         saveButton.setOnClickListener(){
 
-            val name = view.findViewById<TextView>(R.id.editTextCarName)?.text
-            val brand = view.findViewById<TextView>(R.id.editTextCarModel)?.text
-            val mileage = view.findViewById<TextView>(R.id.editTextNumberDecimal)?.text
+            val name = view.findViewById<TextView>(R.id.editTextCarName)?.text.toString()
+            val brand = view.findViewById<TextView>(R.id.editTextCarModel)?.text.toString()
+            val mileage = view.findViewById<TextView>(R.id.editTextNumberDecimal)?.text.toString()
 
-            database.updateName(carID!!, name.toString())
-            database.updateBrand(carID!!, brand.toString())
-            database.updateMileage(carID!!, mileage.toString().toInt())
+            val pref = activity?.getSharedPreferences("Preferences", 0); // 0 - for private mode
+            val email = pref?.getString("loggedInUserEmail", null)
+            val newCar = carID?.let { it1 -> Car(it1, name, brand, Integer.parseInt(mileage), "","") }
+            if (email != null && newCar != null) {
+                database.updateCar(email, newCar)
+            }
 
+            val database = FireBase()
 
+            if (email != null) {
+                val escapedEmail = database.escapeEmail(email)
+                val path = database.dbRef.child(escapedEmail).child("cars").child(carID.toString())
+                path.child("datePicker").setValue(selectedDatePicker)
+                path.child("numPickerMonth").setValue(selectedNumPickerMonth)
+                path.child("numPickerDay").setValue(selectedNumPickerDay)
+                path.child("numPickerMonthMax").setValue(selectedNumPickerMonthMax)
+                path.child("numPickerDayMax").setValue(selectedNumPickerDayMax)
+            }
 
-            val jsonObject = JSONObject()
+            /*val jsonObject = JSONObject()
             jsonObject.put("datePicker$carID", selectedDatePicker)
             jsonObject.put("numPickerMonth$carID", selectedNumPickerMonth)
             jsonObject.put("numPickerDay$carID", selectedNumPickerDay)
@@ -338,9 +362,9 @@ class CarFragment : Fragment() {
             if(!file.exists())
                 file.createNewFile()
 
-            val fileWriter = FileWriter(file, false)
+            val fileWriter = FileWriter(file, true)
             fileWriter.write(jsonObject.toString())
-            fileWriter.close()
+            fileWriter.close()*/
 
 
         }
