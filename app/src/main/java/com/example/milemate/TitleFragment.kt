@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.milemate.database.DBManager
 import com.example.milemate.database.FireBase
@@ -22,6 +24,8 @@ import com.example.milemate.databinding.FragmentFirstBinding
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /**
@@ -34,6 +38,12 @@ class TitleFragment : Fragment() {
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 1
     private var _binding: FragmentFirstBinding? = null
 
+    private var carsCount = 0;
+    private var oldMileage = ArrayList<Int>()
+    private var shouldRemind = false
+
+   // public val carMileages: MutableMap<Int, String> = mutableMapOf()
+    //public val carMileagesSince: MutableMap<Int, String> = mutableMapOf()
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -75,6 +85,8 @@ class TitleFragment : Fragment() {
             FireBase().getUserCars(email){
                 val listView: ListView = view.findViewById(R.id.carlist)
                 val cars = it
+               // OilReminder(cars, carMileages, carMileagesSince)
+                carsCount = cars.count()
                 listView.adapter = ListViewAdapter(context as Activity, cars)
                 listView.setOnItemClickListener { parent, view, position, id ->
                     setFragmentResult("CarData", bundleOf("carID" to cars[position].id.toString()))
@@ -132,6 +144,56 @@ class TitleFragment : Fragment() {
             notificationHelper.sendNotification("MileMate", "Don't forget that you need to change tires from summer to winter until November 10th", 3)
         }
 
+    }
+
+    /*private fun OilReminder(cars : ArrayList<com.example.milemate.database.Car>, carMileages : HashMap<Int, String>, carMileagesSince : kotlin.collections.HashMap<Int, String>)
+    {
+        val notificationHelper = NotificationHelper(requireContext())
+
+        for(i in 0 until carMileages.size)
+        {
+            var vienas = carMileagesSince.get(cars[i].id)?.toInt()
+            var du = carMileages.get(cars[i].id)?.toInt()
+
+            if (vienas != null) {
+
+                if((vienas - du!!) >= 2)
+                {
+                    var carName = cars[i].name
+                    notificationHelper.sendNotification("MileMate", "Don't forget to change your oil for your $carName", 99)
+                    var new = carMileagesSince.get(cars[i].id)
+                    if (new != null) {
+                        carMileages.replace(cars[i].id, new )
+                    }
+                }
+
+            }
+        }
+    }*/
+
+    private fun OilReminder(cars : ArrayList<com.example.milemate.database.Car>, carMileages : HashMap<Int, String>, carMileagesSince : kotlin.collections.HashMap<Int, String>)
+    {
+        val notificationHelper = NotificationHelper(requireContext())
+
+        for(i in 0 until carMileages.size)
+        {
+            var vienas = carMileagesSince.get(i)?.toInt()
+            var du = carMileages.get(i)?.toInt()
+
+            if (vienas != null) {
+
+                if((vienas - du!!) >= 2)
+                {
+                    var carName = cars[i].name
+                    notificationHelper.sendNotification("MileMate", "Don't forget to change your oil for your $carName", 99)
+                    var new = carMileagesSince.get(i)
+                    if (new != null) {
+                        carMileages.replace(i, new )
+                    }
+                }
+
+            }
+        }
     }
 
     private fun PermissionFunction()
