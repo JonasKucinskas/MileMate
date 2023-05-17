@@ -1,13 +1,12 @@
 package com.example.milemate.database
 
-import android.util.Log
 import com.google.firebase.database.*
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 class FireBase() {
 
-    private var dbRef : DatabaseReference = FirebaseDatabase.getInstance("https://milemate-453bc-default-rtdb.europe-west1.firebasedatabase.app").reference
+    var dbRef : DatabaseReference = FirebaseDatabase.getInstance("https://milemate-453bc-default-rtdb.europe-west1.firebasedatabase.app").reference
 
     fun addUser(email : String, password : String){
         // Remove @ and . from email, because these symbols cannot be stored on the database.
@@ -47,7 +46,41 @@ class FireBase() {
             path.child("name").setValue(car.carName)
             path.child("model").setValue(car.carBrand)
             path.child("mileage").setValue(car.carMileage)
+            path.child("datePicker").setValue("2022-05-05")
+            path.child("numPickerMonth").setValue(0)
+            path.child("numPickerDay").setValue(0)
+            path.child("numPickerMonthMax").setValue(0)
+            path.child("numPickerDayMax").setValue(0)
         }
+    }
+
+    fun removeCar(email: String, carid: Int){
+        val escapedEmail = escapeEmail(email)
+
+        val path = dbRef.child(escapedEmail).child("cars").child((carid).toString())
+        path.removeValue()
+
+    }
+
+    fun setCarMileage(email: String, carid: Int, mileage: Int){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars").child((carid).toString())
+        path.child("mileage").setValue(mileage)
+    }
+
+    fun getCarMileage(email: String, carid: Int, callback: (mileage: Int) -> Unit){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars").child((carid).toString())
+        path.child("mileage").get().addOnSuccessListener{
+            callback(Integer.parseInt(it.value.toString()))
+        }
+    }
+    fun updateCar(email: String, car: Car){
+        val escapedEmail = escapeEmail(email)
+        val path = dbRef.child(escapedEmail).child("cars").child((car.id).toString())
+        path.child("name").setValue(car.name)
+        path.child("model").setValue(car.brand)
+        path.child("mileage").setValue(car.mileage)
     }
 
     fun getCar(email: String, carID: Int, callback: (car: Car) -> Unit){
@@ -73,7 +106,7 @@ class FireBase() {
         path.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(car in snapshot.children){
-                    Log.e("FIREBASE DATA FETCH", "Value: ${car.value}")
+                    //Log.e("FIREBASE DATA FETCH", "Value: ${car.value}")
 
                     var mileage : Int = 0
 
@@ -95,10 +128,10 @@ class FireBase() {
 
             override fun onCancelled(error: DatabaseError) {
             }
-
         })
-
     }
+
+
 
     fun getNewCarID(email: String, callback: (newid: Int) -> Unit){
         val escapedEmail = escapeEmail(email)
@@ -106,22 +139,24 @@ class FireBase() {
 
         path.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                var biggestID = 1
+                var currentID = 0
+
                 for(id in snapshot.children) {
 
-                    val idValue : Int? = id.key?.let { Integer.parseInt(it) }
-                    if(biggestID < idValue!!){
-                        biggestID = idValue
+                    val idValue: Int? = id.key?.let { Integer.parseInt(it) }
+                    if (currentID < idValue!!) {
+                        break
                     }
+                    currentID++
                 }
-                callback(biggestID+1)
+                callback(currentID)
             }
             override fun onCancelled(error: DatabaseError) {
             }
         })
     }
 
-    private fun escapeEmail(email: String) : String{
+    fun escapeEmail(email: String) : String{
         return email.replace("@", "").replace(".", "")
     }
 
