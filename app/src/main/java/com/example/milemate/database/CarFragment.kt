@@ -11,7 +11,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.NumberPicker
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.milemate.NotificationHelper
@@ -285,8 +287,7 @@ class CarFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-
+        setFragmentResult("CarData", bundleOf("carID" to carID.toString()))
 
     }
 
