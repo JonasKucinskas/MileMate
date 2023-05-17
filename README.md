@@ -24,9 +24,41 @@ University semester task for computer-science students.
 
 When app is first opened user is presented with login/register screen. Once login information is entered, user can access and use our app.
 
-In order to use MileMate to it's full potential, user can enter their car into our app by pressing "ADD CAR" button. User can also set check-up reminder for their car by pressing "Expiry date set at" text box. Then a calendar will open where user can choose a date for their check-up. To set a reminder, user has to pick desired month and day for their licence expiry date. Seasonal tire change reminders are set automatically once country of resirence is selected.
+![Manual_step1](https://cdn.discordapp.com/attachments/1108332970672132249/1108480260112142467/image.png)
+
+
+If the user is using the app for the first time or seeks to create a new account, they must press register on the Login screren and enter an untaken username, and enter a password two times for confirmation, the password must contain at least 8 characters and an upper letter.
+
+![Manual_step2](https://media.discordapp.net/attachments/1108332970672132249/1108480716326572042/image.png?width=257&height=444)
+
+
+Once login information is entered, user can access press ‘LOG IN’ to use our app.
+
+![Manual_step3](https://media.discordapp.net/attachments/1108332970672132249/1108480260820975746/image.png?width=198&height=341)
+
+
+In order to use MileMate to it's full potential, user can enter their car into our app by pressing "ADD CAR" button.
+
+![Manual_step4-1](https://media.discordapp.net/attachments/1108332970672132249/1108480278911000706/image.png?width=160&height=335)
+![Manual_step4-2](https://media.discordapp.net/attachments/1108332970672132249/1108480279175254046/image.png?width=159&height=334)
+
+
+User can also set check-up reminder for their car by pressing "Expiry date set at" text box. Then a calendar will open where user can choose a date for their check-up. To set a reminder, user has to pick desired month and day for their licence expiry date. 
+
+![Manual_step5-1](https://cdn.discordapp.com/attachments/1108332970672132249/1108480305905553438/image.png)
+![Manual_step5-2](https://cdn.discordapp.com/attachments/1108332970672132249/1108480306115252314/image.png)
+
+
+Seasonal tire change reminders are set automatically once country of residence is selected in the ‘USER SETTINGS’ window when pressing the three dots at the top right corner of the screen.
+
+![Manual_step6-1](https://cdn.discordapp.com/attachments/1108332970672132249/1108480336377163806/image.png)
+![Manual_step6-2](https://cdn.discordapp.com/attachments/1108332970672132249/1108480336612032625/image.png)
+
 
 In order to start your trip and view such information as current fuel consumption, speed, cost of current trip and fuel used, user has to select desired vehicle and click "DRIVE" button.
+
+![Manual_step7](https://cdn.discordapp.com/attachments/1108332970672132249/1108480354869854238/image.png)
+
 
 ## Testing
 
